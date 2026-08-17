@@ -7,7 +7,7 @@
     
     <link rel="stylesheet" href="css/hub.css">
 
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
     <link rel="icon" type="image/png" href="imagens/LOGO_-_Conviva_+Princing38252050767201495.png">
 </head>
 <body>
@@ -16,9 +16,17 @@
         <div class="nav-container">
             <img src="imagens/Logo Conviva branco-02.png" alt="Logo Conviva" class="nav-logo">
             <span class="nav-title">Portal Comercial</span>
-            <button id="btn-sair" class="btn-sair">
-                <span class="icon-sair"></span> Sair
-            </button>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button id="btn-admin" class="btn-sair" style="background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.2); color: #ffffff; display: none; cursor: pointer;">
+                    ⚙️ Painel Administrador
+                </button>
+                <button id="btn-voltar-modulo" class="btn-sair" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.15);">
+                    ← Voltar ao Menu
+                </button>
+                <button id="btn-sair" class="btn-sair">
+                    <span class="icon-sair"></span> Sair
+                </button>
+            </div>
         </div>
     </header>
 
@@ -75,6 +83,6 @@
         </div>
     </main>
 
-    <script src="javascript/hub.js" defer></script>
+    <script type="module" src="javascript/hub.js?v=2"></script>
 </body>
 </html>

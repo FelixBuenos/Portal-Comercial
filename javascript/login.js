@@ -1,12 +1,4 @@
-/* ==========================================================================
-   CONFIGURAÇÃO GERAL DO SUPABASE
-   ========================================================================== */
-const Config = {
-    SUPABASE_URL: 'https://meeljtyblixcdfymgaym.supabase.co',
-    SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lZWxqdHlibGl4Y2RmeW1nYXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNjM0NTEsImV4cCI6MjA5NzkzOTQ1MX0.b1sEpavYWZOIKoKAGcPLOgQKT2I8K6kAYBjo-c_dTgo'
-};
-
-const supabaseClient = supabase.createClient(Config.SUPABASE_URL, Config.SUPABASE_KEY);
+import { supabaseClient } from './servicos/supabaseClient.js';
 
 /* ==========================================================================
    MAPEAMENTO DA INTERFACE DE LOGIN
@@ -36,8 +28,8 @@ class LoginController {
 
     // Checa se o usuário já está logado para enviá-lo direto à seleção de módulos
     static async verificarSessaoAtiva() {
-        const { data: { user } } = await supabaseClient.auth.getUser();
-        if (user) {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session) {
             window.location.href = 'selecao-modulo.html';
         }
     }
@@ -48,17 +40,37 @@ class LoginController {
             e.preventDefault();
             UI.msgErro.style.display = 'none';
             
-            const { error } = await supabaseClient.auth.signInWithPassword({
-                email: UI.inputEmail.value,
-                password: UI.inputSenha.value
-            });
+            try {
+                const { error } = await supabaseClient.auth.signInWithPassword({
+                    email: UI.inputEmail.value,
+                    password: UI.inputSenha.value
+                });
 
-            if (error) {
-                UI.msgErro.textContent = "E-mail ou senha incorretos.";
+                if (error) {
+                    UI.msgErro.textContent = "E-mail ou senha incorretos.";
+                    UI.msgErro.style.display = 'flex';
+                } else {
+                    // Busca e salva a funcao (role) no sessionStorage para acesso instantaneo
+                    const email = UI.inputEmail.value.trim();
+                    try {
+                        const { data: adminData } = await supabaseClient
+                            .from('usuarios_admin')
+                            .select('funcao')
+                            .eq('email', email)
+                            .maybeSingle();
+                        
+                        const role = adminData ? adminData.funcao : 'user';
+                        sessionStorage.setItem('user_role', role);
+                    } catch (roleErr) {
+                        console.error("Erro ao cachear funcao de admin:", roleErr);
+                    }
+
+                    window.location.href = 'selecao-modulo.html';
+                }
+            } catch (err) {
+                console.error("Erro inesperado no login:", err);
+                UI.msgErro.textContent = "Erro de conexão ao tentar fazer login.";
                 UI.msgErro.style.display = 'flex';
-            } else {
-                // REDIRECIONAMENTO AJUSTADO: Agora envia para a portaria geral de módulos
-                window.location.href = 'selecao-modulo.html';
             }
         });
 
@@ -76,16 +88,21 @@ class LoginController {
         UI.btnEnviarLink.addEventListener('click', async () => {
             if (!UI.inputRecuperarEmail.value) { alert("Digite um e-mail válido."); return; }
             
-            const { error } = await supabaseClient.auth.resetPasswordForEmail(UI.inputRecuperarEmail.value, {
-                redirectTo: window.location.href
-            });
+            try {
+                const { error } = await supabaseClient.auth.resetPasswordForEmail(UI.inputRecuperarEmail.value, {
+                    redirectTo: window.location.href
+                });
 
-            if (error) {
-                alert("Erro: " + error.message);
-            } else {
-                alert("Link de redefinição enviado com sucesso! Verifique seu e-mail.");
-                UI.modalRecuperar.style.display = 'none';
-                UI.inputRecuperarEmail.value = '';
+                if (error) {
+                    alert("Erro: " + error.message);
+                } else {
+                    alert("Link de redefinição enviado com sucesso! Verifique seu e-mail.");
+                    UI.modalRecuperar.style.display = 'none';
+                    UI.inputRecuperarEmail.value = '';
+                }
+            } catch (err) {
+                console.error("Erro ao enviar link de recuperação:", err);
+                alert("Erro ao tentar enviar o link de redefinição. Verifique sua conexão.");
             }
         });
     }

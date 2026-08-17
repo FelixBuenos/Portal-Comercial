@@ -1,10 +1,4 @@
-// Cole aqui as suas credenciais padrão do Supabase
-const Config = {
-    SUPABASE_URL: 'https://meeljtyblixcdfymgaym.supabase.co',
-    SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lZWxqdHlibGl4Y2RmeW1nYXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNjM0NTEsImV4cCI6MjA5NzkzOTQ1MX0.b1sEpavYWZOIKoKAGcPLOgQKT2I8K6kAYBjo-c_dTgo'
-};
-
-const supabaseClient = supabase.createClient(Config.SUPABASE_URL, Config.SUPABASE_KEY);
+import { supabaseClient } from './servicos/supabaseClient.js';
 
 const btnSalvar = document.getElementById('btn-salvar-senha');
 const inputSenha = document.getElementById('input-nova-senha');
@@ -28,19 +22,26 @@ btnSalvar.addEventListener('click', async () => {
     btnSalvar.innerText = "Salvando...";
     btnSalvar.disabled = true;
 
-    // Atualiza a senha no Supabase
-    const { data, error } = await supabaseClient.auth.updateUser({
-        password: senha
-    });
+    try {
+        // Atualiza a senha no Supabase
+        const { data, error } = await supabaseClient.auth.updateUser({
+            password: senha
+        });
 
-    if (error) {
-        console.error("Erro:", error);
-        alert("Erro ao atualizar a senha. O link pode ter expirado.");
+        if (error) {
+            console.error("Erro:", error);
+            alert("Erro ao atualizar a senha. O link pode ter expirado.");
+            btnSalvar.innerText = "Salvar e Entrar";
+            btnSalvar.disabled = false;
+        } else {
+            alert("Senha atualizada com sucesso!");
+            // Redireciona para o Hub Principal já com o acesso liberado
+            window.location.href = 'hub.html';
+        }
+    } catch (err) {
+        console.error("Erro inesperado ao atualizar senha:", err);
+        alert("Ocorreu um erro de conexão ao tentar salvar a nova senha.");
         btnSalvar.innerText = "Salvar e Entrar";
         btnSalvar.disabled = false;
-    } else {
-        alert("Senha atualizada com sucesso!");
-        // Redireciona para o Hub Principal já com o acesso liberado
-        window.location.href = 'hub.html';
     }
 });

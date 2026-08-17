@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Links de Referência - Rede Conviva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/marketing/portal-marketing.css">
+    <link rel="icon" type="image/png" href="imagens/LOGO_-_Conviva_+Princing38252050767201495.png">
+
+    <style>
+        .links-wrapper {
+            max-width: 800px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .link-item-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px 30px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .link-item-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .link-info {
+            text-align: left;
+        }
+
+        .link-title {
+            color: #0f172a;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+
+        .link-url-text {
+            color: #64748b;
+            font-size: 0.8rem;
+            word-break: break-all;
+            max-width: 500px;
+        }
+
+        .btn-abrir-link {
+            background: #16a34a;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.2s ease;
+        }
+
+        .btn-abrir-link:hover {
+            background: #15803d;
+        }
+
+        .no-links-msg {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px dashed rgba(255, 255, 255, 0.15);
+            padding: 40px;
+            border-radius: 16px;
+            color: #94a3b8;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="hub-navbar">
+        <div class="nav-container">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <img src="imagens/Logo Conviva branco-02.png" alt="Rede Conviva" class="nav-logo">
+                <button class="btn-voltar" id="btn-voltar-marketing">← Voltar ao Marketing</button>
+            </div>
+            <span class="nav-title" id="titulo-modulo">Links de Referência</span>
+            <div style="width: 120px;"></div> <!-- Espaçador para manter centralizado -->
+        </div>
+    </nav>
+
+    <main class="marketing-main-container">
+        <div class="marketing-intro">
+            <h1 class="marketing-main-title" id="nome-material-titulo">Carregando...</h1>
+            <p class="marketing-subtitle">Abaixo estão listadas as artes e links de referência disponíveis para
+                download.</p>
+        </div>
+
+        <!-- Alerta de Cópia do Canva -->
+        <div class="alerta-canva"
+            style="background: #dc2626; border: 2px solid #b91c1c; border-radius: 8px; padding: 18px 24px; margin: 0 auto 25px auto; max-width: 800px; display: flex; flex-direction: column; gap: 12px; text-align: left; box-shadow: 0 10px 25px rgba(220, 38, 38, 0.25); animation: pulse-border 2s infinite alternate;">
+            <style>
+                @keyframes pulse-border {
+                    0% { box-shadow: 0 10px 25px rgba(220, 38, 38, 0.2); }
+                    100% { box-shadow: 0 10px 30px rgba(220, 38, 38, 0.45); }
+                }
+            </style>
+            <div style="display: flex; align-items: center; gap: 18px; flex-wrap: wrap;">
+                <span style="font-size: 1.5rem;">⚠️</span>
+                <p
+                    style="margin: 0; font-family: 'Sora', sans-serif; font-size: 0.98rem; color: #ffffff; font-weight: 600; line-height: 1.5; flex: 1; min-width: 250px;">
+                    <strong style="color: #fef08a; font-size: 1.05rem; display: block; margin-bottom: 4px;">Instrução Importante:</strong> Ao clicar em qualquer link abaixo, o Canva abrirá uma página
+                    externa. <strong style="color: #fef08a;">"Clique obrigatoriamente"</strong> no botão <strong style="color: #fef08a;">"Compartilhar"</strong> e
+                    depois clique em <strong style="color: #fef08a;">"Baixar"</strong> para
+                    gerar uma cópia em sua conta de forma segura. Não é permitido editar a matriz original.
+                </p>
+                <button id="btn-tutorial-canva"
+                    style="background: #ffffff; color: #dc2626; border: none; padding: 10px 18px; border-radius: 6px; font-family: 'Sora', sans-serif; font-size: 0.8rem; font-weight: 700; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    Ver Ajuda Visual
+                </button>
+            </div>
+            <div id="tutorial-canva-container"
+                style="display: none; text-align: center; margin-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.25); padding-top: 15px;">
+                <a href="imagens/tutorial-canva.png" target="_blank" title="Clique para abrir a imagem em tamanho real">
+                    <img src="imagens/tutorial-canva.png" alt="Tutorial Canva - Usar Modelo"
+                        style="max-width: 100%; border-radius: 6px; border: 1px solid #e2e8f0; box-shadow: 0 4px 10px rgba(0,0,0,0.08); cursor: zoom-in;">
+                </a>
+                <p style="margin: 8px 0 0 0; font-family: 'Sora', sans-serif; font-size: 0.75rem; color: #b45309;">
+                    (Clique na imagem acima para ampliá-la em alta qualidade)</p>
+            </div>
+        </div>
+
+        <div class="links-wrapper" id="container-links">
+            <!-- Os links serão carregados dinamicamente via JS -->
+            <div style="text-align: center; color: #94a3b8; font-size: 1.2rem; padding: 40px;">
+                Carregando referências...
+            </div>
+        </div>
+    </main>
+
+    <script type="module" src="javascript/marketing/detalhe-marketing.js?v=4"></script>
+</body>
+
+</html>

@@ -1,38 +1,45 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Portal Marketing - Rede Conviva</title>
     <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/marketing/portal-marketing.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 </head>
+
 <body>
 
     <nav class="hub-navbar">
         <div class="nav-container">
-            <img src="imagens/Logo Conviva branco-02.png" alt="Rede Conviva" class="nav-logo">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <img src="imagens/Logo Conviva branco-02.png" alt="Rede Conviva" class="nav-logo">
+                <button class="btn-voltar" id="btn-voltar-hub">← Voltar ao Menu</button>
+                <button class="btn-voltar" id="btn-admin" style="background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.2); color: #ffffff; padding: 8px 16px; border-radius: 8px; font-family: 'Sora', sans-serif; font-size: 0.85rem; outline: none; cursor: pointer; display: none; transition: background 0.2s ease;">⚙️ Painel Administrador</button>
+            </div>
             <span class="nav-title">Portal Marketing</span>
-            <button class="btn-voltar" id="btn-voltar-hub">← Voltar ao Menu</button>
+            <div style="width: 120px;" id="nav-spacer"></div> <!-- Espaçador para manter o título centralizado -->
         </div>
     </nav>
 
     <main class="marketing-main-container">
         <div class="marketing-intro">
-            <h1 class="marketing-main-title">Artes e Materiais Comerciais</h1>
-            <p class="marketing-subtitle">Selecione o indicador abaixo para acessar as pastas de downloads e materiais oficiais.</p>
+            <h1 class="marketing-main-title">Artes e Materiais de Marketing</h1>
+            <p class="marketing-subtitle">Selecione o indicador abaixo para acessar as pastas de downloads e materiais
+                oficiais.</p>
         </div>
 
         <div class="marketing-grid">
-            
+
             <div class="card-material">
                 <div>
                     <div class="tag-categoria">Operações</div>
                     <h2 class="material-title">Horário de Funcionamento</h2>
                     <p class="material-description">Artes oficiais no padrão da rede para divulgação de horários normais, feriados e plantões.</p>
                 </div>
-                <a href="#" id="link-horario-de-funcionamento" class="btn-acesso-arte">Acessar Material <span class="seta">→</span></a>
+                <a href="detalhe-marketing.html?tipo=horario-de-funcionamento" class="btn-acesso-arte">Acessar Links <span class="seta">→</span></a>
             </div>
 
             <div class="card-material">
@@ -41,7 +48,7 @@
                     <h2 class="material-title">Arte do Aplicativo</h2>
                     <p class="material-description">Banners e posts de incentivo para download do aplicativo oficial de ofertas e fidelidade Conviva.</p>
                 </div>
-                <a href="#" id="link-arte-padrao-do-aplicativo" class="btn-acesso-arte">Acessar Material <span class="seta">→</span></a>
+                <a href="detalhe-marketing.html?tipo=arte-padrao-do-aplicativo" class="btn-acesso-arte">Acessar Links <span class="seta">→</span></a>
             </div>
 
             <div class="card-material">
@@ -50,7 +57,7 @@
                     <h2 class="material-title">Arte de Aniversário</h2>
                     <p class="material-description">Materiais decorativos e artes institucionais voltadas para as campanhas de aniversário das filiais.</p>
                 </div>
-                <a href="#" id="link-arte-padrao-para-aniversario" class="btn-acesso-arte">Acessar Material <span class="seta">→</span></a>
+                <a href="detalhe-marketing.html?tipo=arte-padrao-para-aniversario" class="btn-acesso-arte">Acessar Links <span class="seta">→</span></a>
             </div>
 
             <div class="card-material">
@@ -59,7 +66,7 @@
                     <h2 class="material-title">Encartes Mensais</h2>
                     <p class="material-description">Acesse o encarte oficial completo com o tablóide de ofertas ativo para o mês vigente.</p>
                 </div>
-                <a href="#" id="link-encartes-mensais" class="btn-acesso-arte">Acessar Encarte <span class="seta">→</span></a>
+                <a href="detalhe-marketing.html?tipo=encartes-mensais" class="btn-acesso-arte">Acessar Links <span class="seta">→</span></a>
             </div>
 
             <div class="card-material">
@@ -68,7 +75,7 @@
                     <h2 class="material-title">Arte para Delivery</h2>
                     <p class="material-description">Materiais de divulgação do Tele-entrega e links diretos para pedidos via WhatsApp das lojas.</p>
                 </div>
-                <a href="#" id="link-arte-padrao-para-delivery" class="btn-acesso-arte">Acessar Material <span class="seta">→</span></a>
+                <a href="detalhe-marketing.html?tipo=arte-padrao-para-delivery" class="btn-acesso-arte">Acessar Links <span class="seta">→</span></a>
             </div>
 
             <div class="card-material">
@@ -77,12 +84,31 @@
                     <h2 class="material-title">Arte para Convênio</h2>
                     <p class="material-description">Cards informativos e panfletos digitais para divulgação de planos corporativos e parcerias.</p>
                 </div>
-                <a href="#" id="link-arte-padrao-para-convenio" class="btn-acesso-arte">Acessar Material <span class="seta">→</span></a>
+                <a href="detalhe-marketing.html?tipo=arte-padrao-para-convenio" class="btn-acesso-arte">Acessar Links <span class="seta">→</span></a>
+            </div>
+
+            <div class="card-material">
+                <div>
+                    <div class="tag-categoria">Eventos</div>
+                    <h2 class="material-title">Café com Marketing</h2>
+                    <p class="material-description">Material de apoio, apresentações e novidades compartilhadas nos encontros do Café com Marketing.</p>
+                </div>
+                <a href="detalhe-marketing.html?tipo=cafe-com-marketing" class="btn-acesso-arte">Acessar Links <span class="seta">→</span></a>
+            </div>
+
+            <div class="card-material">
+                <div>
+                    <div class="tag-categoria">Campanhas</div>
+                    <h2 class="material-title">Ação Saúde</h2>
+                    <p class="material-description">Artes e panfletos informativos para campanhas de saúde preventiva e eventos de bem-estar nas lojas.</p>
+                </div>
+                <a href="detalhe-marketing.html?tipo=acao-saude" class="btn-acesso-arte">Acessar Links <span class="seta">→</span></a>
             </div>
 
         </div>
     </main>
 
-    <script src="javascript/marketing/portal-marketing.js" defer></script>
+    <script type="module" src="javascript/marketing/portal-marketing.js?v=2"></script>
 </body>
+
 </html>

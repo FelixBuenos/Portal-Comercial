@@ -1,12 +1,4 @@
-/* ==========================================================================
-   CONFIGURAÇÃO DO SUPABASE
-   ========================================================================== */
-const Config = {
-    SUPABASE_URL: 'https://meeljtyblixcdfymgaym.supabase.co',
-    SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lZWxqdHlibGl4Y2RmeW1nYXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNjM0NTEsImV4cCI6MjA5NzkzOTQ1MX0.b1sEpavYWZOIKoKAGcPLOgQKT2I8K6kAYBjo-c_dTgo'
-};
-
-const supabaseClient = supabase.createClient(Config.SUPABASE_URL, Config.SUPABASE_KEY);
+import { supabaseClient } from './servicos/supabaseClient.js';
 
 /* ==========================================================================
    ELEMENTOS DO DOM
@@ -15,7 +7,9 @@ const Elementos = {
     btnSair: document.getElementById('btn-sair'),
     btnEncartes: document.getElementById('btn-acessar-encartes'),
     btnOfertas: document.getElementById('btn-acessar-gerencial'),
-    btnIntegracao: document.getElementById('btn-acessar-integracao') // <-- Novo botão mapeado aqui
+    btnIntegracao: document.getElementById('btn-acessar-integracao'),
+    btnVoltarModulo: document.getElementById('btn-voltar-modulo'),
+    btnAdmin: document.getElementById('btn-admin')
 };
 
 /* ==========================================================================
@@ -27,39 +21,97 @@ class HubController {
         this.configurarCliques();
     }
 
-    // Camada de Segurança
+    // Camada de Segurança e Perfis (RBAC) com cache de sessão
     static async verificarAcesso() {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        
-        if (!session) {
-            // Se não estiver logado, chuta de volta para o login
+        try {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            
+            if (!session) {
+                window.location.href = 'index.html';
+                return;
+            }
+
+            // Tenta validar usando a função cacheada para evitar lag visual
+            let funcao = sessionStorage.getItem('user_role');
+
+            if (funcao) {
+                this.aplicarSegurancaPorPerfil(funcao);
+            }
+
+            // Busca do banco em background para validar/atualizar o cache
+            const { data: adminData } = await supabaseClient
+                .from('usuarios_admin')
+                .select('funcao')
+                .eq('email', session.user.email)
+                .maybeSingle();
+
+            const funcaoBanco = adminData ? adminData.funcao : 'user';
+
+            if (funcao !== funcaoBanco) {
+                sessionStorage.setItem('user_role', funcaoBanco);
+                this.aplicarSegurancaPorPerfil(funcaoBanco);
+            }
+
+        } catch (err) {
+            console.error("Erro ao verificar sessão:", err);
             window.location.href = 'index.html';
         }
     }
 
+    static aplicarSegurancaPorPerfil(funcao) {
+        // Bloqueia se o usuário for administrador exclusivo de Marketing
+        if (funcao === 'marketing') {
+            alert("Acesso Negado: Seu perfil está restrito ao módulo de Marketing.");
+            window.location.href = 'selecao-modulo.html';
+            return;
+        }
+
+        // Libera o botão administrativo apenas para perfis Comercial ou Mestre
+        if (Elementos.btnAdmin) {
+            if (funcao === 'comercial' || funcao === 'mestre') {
+                Elementos.btnAdmin.style.display = 'inline-block';
+            } else {
+                Elementos.btnAdmin.style.display = 'none';
+            }
+        }
+    }
+
     static configurarCliques() {
-        // Botão de Sair
+        if (Elementos.btnVoltarModulo) {
+            Elementos.btnVoltarModulo.addEventListener('click', () => {
+                window.location.href = 'selecao-modulo.html';
+            });
+        }
+
+        if (Elementos.btnAdmin) {
+            Elementos.btnAdmin.addEventListener('click', () => {
+                window.location.href = 'admin-comercial.html';
+            });
+        }
+
         Elementos.btnSair.addEventListener('click', async () => {
-            await supabaseClient.auth.signOut();
-            window.location.href = 'index.html';
+            try {
+                await supabaseClient.auth.signOut();
+            } catch (err) {
+                console.error("Erro ao efetuar logout:", err);
+            } finally {
+                sessionStorage.clear(); // Limpa cache local
+                window.location.href = 'index.html';
+            }
         });
 
-        // Rota para Encartes (Azul)
         Elementos.btnEncartes.addEventListener('click', () => {
             window.location.href = 'encartes.html';
         });
 
-        // Rota para Ofertas (Vermelho)
         Elementos.btnOfertas.addEventListener('click', () => {
             window.location.href = 'ofertas.html';
         });
 
-        // Rota para Integração TXT (Verde)
         Elementos.btnIntegracao.addEventListener('click', () => {
             window.location.href = 'integracao.html';
         });
     }
 }
 
-// Inicia o Hub quando a página carregar
 document.addEventListener('DOMContentLoaded', () => HubController.init());

@@ -1,30 +1,19 @@
-/* ==========================================================================
-   CONFIGURAÇÃO DO SUPABASE
-   ========================================================================== */
+import { supabaseClient } from './servicos/supabaseClient.js';
+
 const Config = {
-    SUPABASE_URL: 'https://meeljtyblixcdfymgaym.supabase.co',
-    SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1lZWxqdHlibGl4Y2RmeW1nYXltIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODIzNjM0NTEsImV4cCI6MjA5NzkzOTQ1MX0.b1sEpavYWZOIKoKAGcPLOgQKT2I8K6kAYBjo-c_dTgo',
     MESES_PTBR: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
 };
 
-const supabaseClient = supabase.createClient(Config.SUPABASE_URL, Config.SUPABASE_KEY);
-
 let dadosGeraisCache = []; 
 
-/* ==========================================================================
-   ELEMENTOS DO DOM
-   ========================================================================== */
 const UI = {
     btnVoltarHub: document.getElementById('btn-voltar-hub'),
     selectMes: document.getElementById('select-mes'),
-    selectPlataforma: document.getElementById('select-plataforma'), // NOVO
-    selectArquivo: document.getElementById('select-arquivo'),       // ANTIGO selectSistema
+    selectPlataforma: document.getElementById('select-plataforma'),
+    selectArquivo: document.getElementById('select-arquivo'),
     btnBaixar: document.getElementById('btn-baixar-txt')
 };
 
-/* ==========================================================================
-   CONTROLLER DE INTEGRAÇÃO
-   ========================================================================== */
 class IntegracaoController {
     static init() {
         this.verificarAcesso();
@@ -32,46 +21,40 @@ class IntegracaoController {
     }
 
     static async verificarAcesso() {
-        const { data: { session } } = await supabaseClient.auth.getSession();
-        if (!session) {
+        try {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (!session) {
+                window.location.href = 'index.html';
+            } else {
+                this.carregarDadosDoSupabase();
+            }
+        } catch (err) {
+            console.error("Erro na verificação de acesso:", err);
             window.location.href = 'index.html';
-        } else {
-            this.carregarDadosDoSupabase();
         }
     }
 
-    // MÁGICA QUE SEPARA OS SISTEMAS PELO NOME
-    static identificarPlataforma(nomeSistema) {
-        const nome = nomeSistema.toUpperCase();
-        if (nome.includes('ALPHA7')) return 'Alpha7';
-        if (nome.includes('TRIER')) return 'Trier';
-        return 'Outros';
-    }
-
     static vincularEventos() {
-        UI.btnVoltarHub.addEventListener('click', () => {
-            window.location.href = 'hub.html';
-        });
+        if (UI.btnVoltarHub) {
+            UI.btnVoltarHub.addEventListener('click', () => {
+                window.location.href = 'hub.html';
+            });
+        }
 
-        // 1. Mudou o Mês -> Atualiza as Plataformas (Alpha7/Trier)
         UI.selectMes.addEventListener('change', () => {
             this.atualizarDropdownPlataformas();
         });
 
-        // 2. Mudou a Plataforma -> Atualiza os Arquivos (App/Encarte)
         UI.selectPlataforma.addEventListener('change', () => {
             this.atualizarDropdownArquivos();
         });
 
-        // 3. Mudou o Arquivo -> Libera o botão de Download
         UI.selectArquivo.addEventListener('change', () => {
             UI.btnBaixar.disabled = !UI.selectArquivo.value;
         });
 
-        // Evento de Download
         UI.btnBaixar.addEventListener('click', async () => {
             const urlArquivo = UI.selectArquivo.value;
-            
             if (!urlArquivo) return;
 
             try {
@@ -108,38 +91,41 @@ class IntegracaoController {
     }
 
     static async carregarDadosDoSupabase() {
-        const { data, error } = await supabaseClient
-            .from('integracoes')
-            .select('data_integracao, tipo_sistema, url_txt')
-            .order('data_integracao', { ascending: false });
+        try {
+            const { data, error } = await supabaseClient
+                .from('integracoes')
+                .select('data_integracao, sistema_erp, descricao, url_txt')
+                .order('data_integracao', { ascending: false });
 
-        if (error || !data || data.length === 0) {
-            UI.selectMes.innerHTML = '<option>Nenhum dado encontrado</option>';
-            return;
-        }
-
-        dadosGeraisCache = data;
-
-        UI.selectMes.innerHTML = '';
-        const mesesInseridos = new Set();
-
-        data.forEach(item => {
-            if (!mesesInseridos.has(item.data_integracao)) {
-                mesesInseridos.add(item.data_integracao);
-                const [ano, mesStr] = item.data_integracao.split('-');
-                const textoMes = `${Config.MESES_PTBR[parseInt(mesStr) - 1]} / ${ano}`;
-                
-                let option = document.createElement('option');
-                option.value = item.data_integracao;
-                option.text = textoMes;
-                UI.selectMes.appendChild(option);
+            if (error || !data || data.length === 0) {
+                UI.selectMes.innerHTML = '<option>Nenhum dado encontrado</option>';
+                return;
             }
-        });
 
-        UI.selectMes.disabled = false;
-        
-        // Dispara a cascata de atualização
-        this.atualizarDropdownPlataformas();
+            dadosGeraisCache = data;
+
+            UI.selectMes.innerHTML = '';
+            const mesesInseridos = new Set();
+
+            data.forEach(item => {
+                if (!mesesInseridos.has(item.data_integracao)) {
+                    mesesInseridos.add(item.data_integracao);
+                    const [ano, mesStr] = item.data_integracao.split('-');
+                    const textoMes = `${Config.MESES_PTBR[parseInt(mesStr) - 1]} / ${ano}`;
+                    
+                    let option = document.createElement('option');
+                    option.value = item.data_integracao;
+                    option.text = textoMes;
+                    UI.selectMes.appendChild(option);
+                }
+            });
+
+            UI.selectMes.disabled = false;
+            this.atualizarDropdownPlataformas();
+        } catch (err) {
+            console.error("Erro ao carregar dados do Supabase:", err);
+            UI.selectMes.innerHTML = '<option>Erro de conexão com o banco de dados.</option>';
+        }
     }
 
     static atualizarDropdownPlataformas() {
@@ -155,7 +141,7 @@ class IntegracaoController {
         if (dadosDoMes.length > 0) {
             const plataformasUnicas = new Set();
             dadosDoMes.forEach(item => {
-                plataformasUnicas.add(this.identificarPlataforma(item.tipo_sistema));
+                plataformasUnicas.add(item.sistema_erp);
             });
 
             plataformasUnicas.forEach(plat => {
@@ -182,14 +168,13 @@ class IntegracaoController {
         }
 
         const arquivosFiltrados = dadosGeraisCache.filter(item => {
-            return item.data_integracao === mesSelecionado && 
-                   this.identificarPlataforma(item.tipo_sistema) === platSelecionada;
+            return item.data_integracao === mesSelecionado && item.sistema_erp === platSelecionada;
         });
 
         arquivosFiltrados.forEach(item => {
             let option = document.createElement('option');
             option.value = item.url_txt; 
-            option.text = item.tipo_sistema; 
+            option.text = item.descricao; 
             UI.selectArquivo.appendChild(option);
         });
 
