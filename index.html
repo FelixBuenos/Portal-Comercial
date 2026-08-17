@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Portal Comercial</title>
+    
+    <link rel="stylesheet" href="css/login.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="javascript/login.js" defer></script>
+    <link rel="icon" type="image/png" href="imagens/LOGO_-_Conviva_+Princing38252050767201495.png">
+</head>
+<body>
+
+    <div class="login-container">
+        <div class="login-card">
+            <img src="imagens/logo-farmacias-conviva.png" alt="Logo Conviva" class="logo-login" onerror="this.src='https://redeconviva.com.br/wp-content/uploads/2022/07/logo-conviva.png';">
+            
+            <h2 class="titulo-login">Portal Comercial</h2>
+            <p class="subtitulo-login">Faça login para acessar os dados</p>
+
+            <form id="form-login">
+                <div class="input-group">
+                    <label for="email">E-mail Comercial</label>
+                    <input type="email" id="email" required placeholder="seu.nome@conviva.com.br">
+                </div>
+                
+                <div class="input-group">
+                    <label for="senha">Senha</label>
+                    <input type="password" id="senha" required placeholder="••••••••">
+                </div>
+                
+                <button type="submit" id="btn-entrar" class="btn-full">Entrar no Sistema</button>
+                
+                <div class="container-link-esqueceu">
+                    <a href="#" id="link-mudar-senha" class="link-discreto">Mudar ou recuperar senha</a>
+                </div>
+                
+                <div id="mensagem-erro" class="mensagem-erro" style="display: none;"></div>
+            </form>
+        </div>
+    </div>
+
+    <div id="modal-recuperar-senha" class="modal-overlay" style="display: none;">
+        <div class="login-card">
+            <h2 class="titulo-login">Recuperar Acesso</h2>
+            <p class="subtitulo-login">Digite o seu e-mail cadastrado. Você receberá um link seguro.</p>
+            
+            <div class="input-group">
+                <label for="input-recuperar-email">E-mail Cadastrado</label>
+                <input type="email" id="input-recuperar-email" placeholder="seu.nome@conviva.com.br">
+            </div>
+            
+            <button id="btn-enviar-link" class="btn-full">Enviar Link de Recuperação</button>
+            <button id="btn-fechar-modal" class="btn-full" style="background: var(--lp-text-muted); margin-top: 10px;">Voltar</button>
+        </div>
+    </div>
+
+</body>
+</html>

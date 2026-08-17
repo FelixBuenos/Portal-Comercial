@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Gerencial - Seleção de Ferramenta</title>
+    
+    <link rel="stylesheet" href="css/hub.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="icon" type="image/png" href="imagens/LOGO_-_Conviva_+Princing38252050767201495.png">
+</head>
+<body>
+
+    <header class="hub-navbar">
+        <div class="nav-container">
+            <img src="imagens/Logo Conviva branco-02.png" alt="Logo Conviva" class="nav-logo">
+            <span class="nav-title">Portal Comercial</span>
+            <button id="btn-sair" class="btn-sair">
+                <span class="icon-sair"></span> Sair
+            </button>
+        </div>
+    </header>
+
+    <main class="hub-main-container">
+        <div class="hub-intro">
+            <h1 class="hub-main-title">Selecione a Visualização </h1>
+            <p class="hub-subtitle">Escolha o painel que deseja acessar no momento.</p>
+        </div>
+
+        <div class="hub-grid">
+            
+            <!-- Card 1: Encartes (Azul) -->
+            <div class="card-ferramenta card-azul">
+                <div class="card-icon-container text-azul">
+                    <span class="icon-svg"></span>
+                </div>
+                <h2 class="card-title">Visualizar Encartes</h2>
+                <p class="card-description">
+                    Planilhas de encartes comerciais
+                </p>
+                <button id="btn-acessar-encartes" class="btn-action btn-action-azul">
+                    Acessar Planilha <span class="seta">→</span>
+                </button>
+            </div>
+
+            <!-- Card 2: Ofertas (Vermelho) -->
+            <div class="card-ferramenta card-vermelho">
+                <div class="card-icon-container text-vermelho">
+                    <span class="icon-svg"></span>
+                </div>
+                <h2 class="card-title">Visualizar Ofertas</h2>
+                <p class="card-description">
+                    Planilhas de ofertas comerciais
+                </p>
+                <button id="btn-acessar-gerencial" class="btn-action btn-action-vermelho">
+                    Acessar Planilha <span class="seta">→</span>
+                </button>
+            </div>
+
+            <!-- NOVO CARD 3: Integração (Verde) -->
+            <div class="card-ferramenta card-verde">
+                <div class="card-icon-container text-verde">
+                    <span class="icon-svg"></span>
+                </div>
+                <h2 class="card-title">Arquivos TXT</h2>
+                <p class="card-description">
+                    Integração para sistemas gerenciais
+                </p>
+                <button id="btn-acessar-integracao" class="btn-action btn-action-verde">
+                    Acessar Arquivos <span class="seta">→</span>
+                </button>
+            </div>
+
+        </div>
+    </main>
+
+    <script src="javascript/hub.js" defer></script>
+</body>
+</html>

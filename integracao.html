@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Integração de Sistemas - Portal Gerencial</title>
+    
+    <link rel="icon" type="image/png" href="imagens/LOGO_-_Conviva_+Princing38252050767201495.png">
+    <link rel="stylesheet" href="css/encartes.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="javascript/integracoes.js" defer></script>
+</head>
+<body style="display: flex; flex-direction: column; min-height: 100vh; background-color: #f1f5f9; margin: 0; font-family: 'Sora', sans-serif;">
+
+    <header class="encartes-header">
+        <div class="header-esquedo">
+            <button id="btn-voltar-hub" class="btn-voltar">
+                <span class="icone-voltar">⬅</span> Voltar ao Menu
+            </button>
+            <h1 class="titulo-pagina">Arquivos de Integração (TXT)</h1>
+        </div>
+
+        <div class="header-direito">
+            <div class="filtro-grupo" style="display: flex; align-items: center; gap: 10px;">
+                
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <label for="select-mes">Mês:</label>
+                    <select id="select-mes" disabled>
+                        <option>Carregando...</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <label for="select-plataforma">Sistema:</label>
+                    <select id="select-plataforma" disabled>
+                        <option value="">Selecione...</option>
+                    </select>
+                </div>
+
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <label for="select-arquivo">Arquivo:</label>
+                    <select id="select-arquivo" disabled>
+                        <option value="">Selecione o arquivo...</option>
+                    </select>
+                </div>
+                
+                <button id="btn-baixar-txt" class="btn-visualizar" style="background-color: #16a34a; margin-left: 5px;" disabled>Baixar TXT</button>
+            </div>
+        </div>
+    </header>
+
+    <main style="flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 40px;">
+        <div style="background: white; padding: 40px; border-radius: 12px; max-width: 600px; width: 100%; box-shadow: 0 10px 25px rgba(0,0,0,0.05); text-align: center; border-top: 5px solid #16a34a;">
+            <div style="font-size: 3.5rem; margin-bottom: 20px;">⚙️</div>
+            <h2 style="color: #0f172a; margin-bottom: 15px; font-size: 1.5rem; font-weight: 600;">Como utilizar os arquivos?</h2>
+            
+            <div style="text-align: left; color: #475569; line-height: 1.7; font-size: 1rem; margin-bottom: 25px;">
+                <p><strong>1.</strong> Selecione o <strong>Mês</strong> desejado.</p>
+                <p><strong>2.</strong> Escolha o seu <strong>Sistema</strong> (Alpha7 ou Trier).</p>
+                <p><strong>3.</strong> Selecione o <strong>Arquivo</strong> (App ou Encarte) e clique em <strong>"Baixar TXT"</strong>.</p>
+                <p><strong>4.</strong> Importe no seu ERP para atualizar os preços da campanha.</p>
+            </div>
+            
+            <div style="background: #f0fdf4; padding: 15px; border-radius: 8px; border: 1px dashed #bbf7d0; color: #166534; font-size: 0.9rem;">
+                <strong>Aviso:</strong> Certifique-se de baixar o arquivo correto para o seu sistema para evitar erros de leitura na importação.
+            </div>
+        </div>
+    </main>
+
+</body>
+</html>

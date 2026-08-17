@@ -1,0 +1,190 @@
+/* css/marketing/portal-marketing.css */
+
+/* --- Estilos Base e Fundo Gradiente --- */
+*, *::before, *::after { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body {
+    font-family: 'Sora', sans-serif;
+    background: linear-gradient(135deg, #003a7a 0%, #001229 100%);
+    min-height: 100vh;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Navbar Superior --- */
+.hub-navbar {
+    width: 100%;
+    background: rgba(0, 18, 41, 0.4);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo { max-height: 35px; width: auto; }
+
+.nav-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.btn-voltar {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.btn-voltar:hover { 
+    background: rgba(255, 255, 255, 0.2); 
+    border-color: #ffffff;
+}
+
+/* --- Container do Conteúdo --- */
+.marketing-main-container {
+    max-width: 1200px;
+    width: 100%;
+    margin: 140px auto auto auto;
+    padding: 0 40px 60px 40px;
+    flex-grow: 1;
+}
+
+.marketing-intro { margin-bottom: 45px; text-align: left; }
+.marketing-main-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 10px; }
+.marketing-subtitle { color: #94a3b8; font-size: 1rem; }
+
+/* --- Grid de Cards (3 Colunas Modulares) --- */
+.marketing-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 30px;
+    width: 100%;
+}
+
+/* --- Cards de Materiais com Detalhes em Vermelho --- */
+.card-material {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 40px 35px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden; 
+}
+.card-material:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.45);
+}
+
+/* Listra superior decorativa vermelha */
+.card-material::before {
+    content: ''; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+    right: 0; 
+    height: 5px; 
+    background: #fcfcfd; 
+}
+
+/* Textos e Tags internas */
+.tag-categoria {
+    width: fit-content;
+    background: #fef2f2;
+    color: #dc2626;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 20px;
+}
+
+.material-title { 
+    color: #0f172a; 
+    font-size: 1.25rem; 
+    font-weight: 700; 
+    margin-bottom: 12px; 
+}
+
+.material-description { 
+    color: #475569; 
+    font-size: 0.9rem; 
+    line-height: 1.6; 
+    margin-bottom: 35px; 
+    flex-grow: 1; 
+}
+
+/* --- Botão de Download/Acesso --- */
+.btn-acesso-arte {
+    width: fit-content; 
+    padding: 12px 24px; 
+    border: none; 
+    border-radius: 8px;
+    font-family: 'Sora', sans-serif; 
+    font-size: 0.9rem; 
+    font-weight: 600; 
+    cursor: pointer;
+    background: #fef2f2; 
+    color: #dc2626;
+    display: flex; 
+    align-items: center; 
+    gap: 8px; 
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-acesso-arte .seta { 
+    transition: transform 0.2s ease; 
+}
+
+/* Efeito de hover preenchendo com vermelho sólido */
+.card-material:hover .btn-acesso-arte { 
+    background: #dc2626; 
+    color: #ffffff; 
+}
+
+.card-material:hover .seta { 
+    transform: translateX(4px); 
+}
+
+/* --- Responsividade --- */
+@media (max-width: 992px) {
+    .marketing-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 768px) {
+    .marketing-grid { grid-template-columns: 1fr; gap: 25px; }
+    .marketing-main-container { margin-top: 110px; padding: 0 20px 40px 20px; }
+    .marketing-main-title { font-size: 1.8rem; }
+    .nav-title { display: none; }
+}

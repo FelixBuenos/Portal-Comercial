@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encartes Comerciais - Portal Gerencial</title>
+    
+    <link rel="stylesheet" href="css/encartes.css">
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <script src="javascript/encartes.js" defer></script>
+    <link rel="icon" type="image/png" href="imagens/LOGO_-_Conviva_+Princing38252050767201495.png">
+</head>
+<body>
+
+    <header class="encartes-header">
+        <div class="header-esquedo">
+            <button id="btn-voltar-hub" class="btn-voltar">
+                <span class="icone-voltar">⬅</span> Voltar ao Menu
+            </button>
+            <h1 class="titulo-pagina">Encartes Comerciais</h1>
+        </div>
+
+        <div class="header-direito">
+            <div class="filtro-grupo">
+                <label for="select-mes">Selecione o Encarte:</label>
+                <select id="select-mes" disabled>
+                    <option>Carregando encartes...</option>
+                </select>
+                <button id="btn-visualizar" class="btn-visualizar" disabled>Visualizar</button>
+                
+                <button id="btn-exportar" class="btn-visualizar" style="background-color: #107c41;" disabled>Exportar Excel</button>
+            </div>
+        </div>
+    </header>
+
+    <main class="area-iframe">
+        <iframe id="iframe-planilha" src="" title="Visualizador de Planilha"></iframe>
+    </main>
+
+</body>
+</html>

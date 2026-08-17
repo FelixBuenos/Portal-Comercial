@@ -1,0 +1,170 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --hub-bg-light:       #003a7a; 
+    --hub-bg-dark:        #001229; 
+    --hub-surface:        #ffffff;
+    --hub-text:           #0f172a;
+    --hub-text-muted:     #94a3b8;
+    --hub-font:           'Sora', sans-serif;
+    --hub-radius:         20px;
+    --hub-radius-sm:      8px;
+    --hub-ease:           cubic-bezier(0.4, 0, 0.2, 1);
+    
+    /* Cores das Ações */
+    --color-azul-btn:     #eff6ff;
+    --color-azul-txt:     #0055a5;
+    --color-vermelho-btn: #fef2f2;
+    --color-vermelho-txt: #dc2626;
+    --color-verde-btn:    #f0fdf4; /* NOVO: Fundo do botão verde */
+    --color-verde-txt:    #16a34a; /* NOVO: Texto e listra verde */
+}
+
+/* --- Estilos de Reset --- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    font-family: var(--hub-font);
+    background: linear-gradient(135deg, var(--hub-bg-light) 0%, var(--hub-bg-dark) 100%);
+    min-height: 100vh;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* --- Navbar Superior --- */
+.hub-navbar {
+    width: 100%;
+    background: rgba(0, 18, 41, 0.4);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo { max-height: 35px; width: auto; }
+
+.nav-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.btn-sair {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    padding: 8px 20px;
+    border-radius: var(--hub-radius-sm);
+    font-family: var(--hub-font);
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s var(--hub-ease);
+}
+.btn-sair:hover { background: #dc2626; border-color: #dc2626; }
+
+/* --- Container do Conteúdo --- */
+.hub-main-container {
+    max-width: 1100px;
+    width: 100%;
+    margin: 140px auto auto auto;
+    padding: 0 40px 60px 40px;
+    text-align: center;
+    flex-grow: 1;
+}
+
+.hub-intro { margin-bottom: 50px; }
+.hub-main-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 12px; }
+.hub-subtitle { color: var(--hub-text-muted); font-size: 1rem; }
+
+/* --- Grid de Ferramentas (ATUALIZADO PARA 3 COLUNAS) --- */
+.hub-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* Aqui mudamos de 2 para 3 colunas */
+    gap: 30px;
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* --- Cards Estilizados Individuais --- */
+.card-ferramenta {
+    background: var(--hub-surface);
+    border-radius: var(--hub-radius);
+    padding: 45px 35px;
+    text-align: left;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    transition: transform 0.3s var(--hub-ease), box-shadow 0.3s var(--hub-ease);
+    overflow: hidden; 
+}
+.card-ferramenta:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 30px 50px rgba(0, 0, 0, 0.45);
+}
+
+/* Linhas decorativas */
+.card-azul::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--color-azul-txt); 
+}
+.card-vermelho::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--color-vermelho-txt); 
+}
+.card-verde::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--color-verde-txt); 
+}
+
+/* Ícones e Textos */
+.card-icon-container { font-size: 1.8rem; margin-bottom: 25px; }
+.card-title { color: var(--hub-text); font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; }
+.card-description { color: #475569; font-size: 0.9rem; line-height: 1.6; margin-bottom: 35px; flex-grow: 1; }
+
+/* --- Botões Customizados --- */
+.btn-action {
+    width: fit-content; padding: 12px 24px; border: none; border-radius: var(--hub-radius-sm);
+    font-family: var(--hub-font); font-size: 0.9rem; font-weight: 600; cursor: pointer;
+    display: flex; align-items: center; gap: 8px; transition: all 0.2s var(--hub-ease);
+}
+.btn-action .seta { transition: transform 0.2s var(--hub-ease); }
+.btn-action:hover .seta { transform: translateX(4px); }
+
+/* Cores específicas dos botões */
+.btn-action-azul { background: var(--color-azul-btn); color: var(--color-azul-txt); }
+.btn-action-azul:hover { background: var(--color-azul-txt); color: #ffffff; }
+
+.btn-action-vermelho { background: var(--color-vermelho-btn); color: var(--color-vermelho-txt); }
+.btn-action-vermelho:hover { background: var(--color-vermelho-txt); color: #ffffff; }
+
+.btn-action-verde { background: var(--color-verde-btn); color: var(--color-verde-txt); }
+.btn-action-verde:hover { background: var(--color-verde-txt); color: #ffffff; }
+
+/* --- Responsividade --- */
+@media (max-width: 992px) {
+    .hub-grid { grid-template-columns: repeat(2, 1fr); } /* Em telas médias, cai para 2 por linha */
+}
+@media (max-width: 768px) {
+    .hub-grid { grid-template-columns: 1fr; gap: 25px; } /* Em celular, fica 1 por linha */
+    .hub-main-container { margin-top: 110px; padding: 0 20px 40px 20px; }
+    .hub-main-title { font-size: 1.8rem; }
+    .nav-title { display: none; }
+}

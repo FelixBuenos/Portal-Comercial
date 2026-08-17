@@ -1,0 +1,161 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap');
+
+:root {
+    --bg-header: #ffffff;
+    --bg-fundo: #f1f5f9;
+    --text-principal: #0f172a;
+    --text-secundario: #64748b;
+    --border-color: #e2e8f0;
+    
+    --azul-conviva: #0055a5;
+    --azul-hover: #003a7a;
+    
+    --font-padrao: 'Sora', sans-serif;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    width: 100%;
+    height: 100%;
+    font-family: var(--font-padrao);
+    background-color: var(--bg-fundo);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Evita barra de rolagem dupla com o iframe */
+}
+
+/* --- Cabeçalho --- */
+.encartes-header {
+    background-color: var(--bg-header);
+    padding: 15px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border-color);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    z-index: 10;
+}
+
+.header-esquedo {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.titulo-pagina {
+    font-size: 1.2rem;
+    color: var(--text-principal);
+    font-weight: 600;
+    border-left: 2px solid var(--border-color);
+    padding-left: 20px;
+}
+
+/* --- Botão Voltar --- */
+.btn-voltar {
+    background: transparent;
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 6px;
+    color: var(--text-secundario);
+    font-family: var(--font-padrao);
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-voltar:hover {
+    background: var(--bg-fundo);
+    color: var(--text-principal);
+    border-color: #cbd5e1;
+}
+
+/* --- Controles da Direita (Filtros) --- */
+.header-direito {
+    display: flex;
+    align-items: center;
+}
+
+.filtro-grupo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.filtro-grupo label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--text-principal);
+}
+
+.filtro-grupo select {
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    font-family: var(--font-padrao);
+    font-size: 0.9rem;
+    color: var(--text-principal);
+    background-color: #fff;
+    outline: none;
+    min-width: 220px;
+}
+
+.filtro-grupo select:focus {
+    border-color: var(--azul-conviva);
+}
+
+.btn-visualizar {
+    background-color: var(--azul-conviva);
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-family: var(--font-padrao);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-visualizar:hover:not(:disabled) {
+    background-color: var(--azul-hover);
+}
+
+.btn-visualizar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* --- Área de Exibição da Planilha --- */
+.area-iframe {
+    flex-grow: 1;
+    width: 100%;
+    background-color: #e2e8f0;
+}
+
+.area-iframe iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* --- Responsivo --- */
+@media (max-width: 800px) {
+    .encartes-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        padding: 15px;
+    }
+    .titulo-pagina { border: none; padding-left: 0; }
+    .filtro-grupo { flex-wrap: wrap; }
+}
