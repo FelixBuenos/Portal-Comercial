@@ -72,14 +72,31 @@ class OfertasController {
             const urlSelecionada = UI.selectMes.value;
             if (urlSelecionada) {
                 this.mostrarLoader();
-                UI.iframePlanilha.src = urlSelecionada;
+                let iframeUrl = urlSelecionada;
+                if ((iframeUrl.includes('sharepoint.com') || iframeUrl.includes('office.com')) && !iframeUrl.includes('action=embedview')) {
+                    iframeUrl += iframeUrl.includes('?') ? '&action=embedview' : '?action=embedview';
+                }
+                UI.iframePlanilha.src = iframeUrl;
             }
         });
 
         UI.btnExportar.addEventListener('click', () => {
             const urlAtual = UI.selectMes.value;
             if (urlAtual) {
-                const urlExportacao = urlAtual.replace(/\/preview|\/edit.*/, '/export?format=xlsx');
+                let urlExportacao = urlAtual;
+                
+                // Verifica se é Google Sheets
+                if (urlAtual.includes('google.com/spreadsheets')) {
+                    urlExportacao = urlAtual.replace(/\/preview|\/edit.*/, '/export?format=xlsx');
+                } 
+                // Verifica se é SharePoint / Microsoft
+                else if (urlAtual.includes('sharepoint.com') || urlAtual.includes('office.com') || urlAtual.includes('live.com')) {
+                    const separador = urlExportacao.includes('?') ? '&' : '?';
+                    if (!urlExportacao.includes('download=')) {
+                        urlExportacao += `${separador}download=1`;
+                    }
+                }
+                
                 window.open(urlExportacao, '_blank');
             }
         });
@@ -121,7 +138,11 @@ class OfertasController {
             // Inicializa a primeira planilha com loader ativo
             if (data[0] && data[0].url_ofertas) {
                 this.mostrarLoader();
-                UI.iframePlanilha.src = data[0].url_ofertas;
+                let iframeUrl = data[0].url_ofertas;
+                if ((iframeUrl.includes('sharepoint.com') || iframeUrl.includes('office.com')) && !iframeUrl.includes('action=embedview')) {
+                    iframeUrl += iframeUrl.includes('?') ? '&action=embedview' : '?action=embedview';
+                }
+                UI.iframePlanilha.src = iframeUrl;
             } else {
                 this.ocultarLoader();
             }
