@@ -66,9 +66,9 @@ class HubController {
             return;
         }
 
-        // Libera o botão administrativo apenas para perfis Comercial ou Mestre
+        // Libera o botão administrativo apenas para perfil Mestre ou Mestre Comercial
         if (Elementos.btnAdmin) {
-            if (funcao === 'comercial' || funcao === 'mestre') {
+            if (funcao === 'mestre' || funcao === 'mestre_comercial') {
                 Elementos.btnAdmin.style.display = 'inline-block';
             } else {
                 Elementos.btnAdmin.style.display = 'none';

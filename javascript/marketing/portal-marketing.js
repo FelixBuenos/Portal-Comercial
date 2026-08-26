@@ -56,9 +56,9 @@ class PortalMarketingController {
             return;
         }
 
-        // Libera o botão administrativo do marketing apenas para perfis Marketing ou Mestre
+        // Libera o botão administrativo do marketing apenas para perfil Mestre ou Mestre Marketing
         if (UI.btnAdmin) {
-            if (funcao === 'marketing' || funcao === 'mestre') {
+            if (funcao === 'mestre' || funcao === 'mestre_marketing') {
                 UI.btnAdmin.style.display = 'inline-block';
                 if (UI.navSpacer) {
                     UI.navSpacer.style.width = '300px'; 

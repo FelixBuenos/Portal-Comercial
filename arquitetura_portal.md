@@ -63,7 +63,7 @@ Quando o usuário digita suas credenciais na tela de login, o Supabase valida as
   Se não houver sessão ativa, o usuário é imediatamente redirecionado para a raiz (`index.html`).
 
 ### B. Controle de Acesso Baseado em Perfis (RBAC - Role-Based Access Control)
-Os privilégios dentro do sistema são segmentados em níveis de permissão (ex: `user`, `marketing`, `comercial`, `mestre`).
+Os privilégios dentro do sistema são segmentados em níveis de permissão (ex: `visualizador`, `marketing`, `comercial`, `mestre_marketing`, `mestre_comercial`, `mestre`).
 1. **Tabela de Mapeamento:** Existe uma tabela chamada `usuarios_admin` no banco de dados que associa o e-mail do usuário à sua respectiva função (`funcao`).
 2. **Filtro no Frontend:** Páginas restritas como `admin-comercial.html` possuem uma etapa de verificação de papel (Role Verification) que barra o acesso caso o perfil do usuário não confira com as regras estabelecidas.
 

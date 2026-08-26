@@ -40,8 +40,8 @@ class AdminComercialController {
 
             const funcao = data ? data.funcao : null;
 
-            if (error || !data || (funcao !== 'comercial' && funcao !== 'mestre')) {
-                alert("Acesso Negado: Apenas administradores do Comercial têm permissão para acessar esta página.");
+            if (error || !data || (funcao !== 'mestre' && funcao !== 'mestre_comercial')) {
+                alert("Acesso Negado: Apenas administradores Mestre ou Mestre Comercial têm permissão para acessar esta página.");
                 window.location.href = 'hub.html';
             }
         } catch (err) {

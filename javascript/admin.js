@@ -35,8 +35,8 @@ class AdminController {
 
             const funcao = data ? data.funcao : null;
 
-            if (error || !data || (funcao !== 'marketing' && funcao !== 'mestre')) {
-                alert("Acesso Negado: Apenas administradores do Marketing têm permissão para acessar esta página.");
+            if (error || !data || (funcao !== 'mestre' && funcao !== 'mestre_marketing')) {
+                alert("Acesso Negado: Apenas administradores Mestre ou Mestre Marketing têm permissão para acessar esta página.");
                 window.location.href = 'marketing.html';
             }
         } catch (err) {
