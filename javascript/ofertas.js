@@ -44,6 +44,11 @@ class OfertasController {
         if (UI.loader) {
             UI.loader.style.display = 'flex';
             UI.loader.style.opacity = '1';
+
+            if (this.loaderTimeout) clearTimeout(this.loaderTimeout);
+            this.loaderTimeout = setTimeout(() => {
+                this.ocultarLoader();
+            }, 3500);
         }
     }
 
@@ -73,7 +78,9 @@ class OfertasController {
             if (urlSelecionada) {
                 this.mostrarLoader();
                 let iframeUrl = urlSelecionada;
-                if ((iframeUrl.includes('sharepoint.com') || iframeUrl.includes('office.com')) && !iframeUrl.includes('action=embedview')) {
+                if (iframeUrl.includes('google.com/spreadsheets') && iframeUrl.includes('/edit')) {
+                    iframeUrl = iframeUrl.replace(/\/edit.*/, '/preview');
+                } else if ((iframeUrl.includes('sharepoint.com') || iframeUrl.includes('office.com')) && !iframeUrl.includes('action=embedview')) {
                     iframeUrl += iframeUrl.includes('?') ? '&action=embedview' : '?action=embedview';
                 }
                 UI.iframePlanilha.src = iframeUrl;
@@ -87,7 +94,13 @@ class OfertasController {
                 
                 // Verifica se é Google Sheets
                 if (urlAtual.includes('google.com/spreadsheets')) {
-                    urlExportacao = urlAtual.replace(/\/preview|\/edit.*/, '/export?format=xlsx');
+                    if (urlAtual.includes('/pubhtml')) {
+                        urlExportacao = urlAtual.replace(/\/pubhtml.*/, '/pub?output=xlsx');
+                    } else if (urlAtual.includes('/pub?')) {
+                        urlExportacao = urlAtual.replace(/\/pub\?.*/, '/pub?output=xlsx');
+                    } else {
+                        urlExportacao = urlAtual.replace(/\/preview|\/edit.*/, '/export?format=xlsx');
+                    }
                 } 
                 // Verifica se é SharePoint / Microsoft
                 else if (urlAtual.includes('sharepoint.com') || urlAtual.includes('office.com') || urlAtual.includes('live.com')) {
@@ -97,7 +110,14 @@ class OfertasController {
                     }
                 }
                 
-                window.open(urlExportacao, '_blank');
+                // Realiza o download de forma independente na mesma aba
+                // Evita problemas de perda de sessão anônima/guest ao abrir nova aba (window.open)
+                const a = document.createElement('a');
+                a.href = urlExportacao;
+                a.download = '';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
             }
         });
     }
@@ -139,7 +159,9 @@ class OfertasController {
             if (data[0] && data[0].url_ofertas) {
                 this.mostrarLoader();
                 let iframeUrl = data[0].url_ofertas;
-                if ((iframeUrl.includes('sharepoint.com') || iframeUrl.includes('office.com')) && !iframeUrl.includes('action=embedview')) {
+                if (iframeUrl.includes('google.com/spreadsheets') && iframeUrl.includes('/edit')) {
+                    iframeUrl = iframeUrl.replace(/\/edit.*/, '/preview');
+                } else if ((iframeUrl.includes('sharepoint.com') || iframeUrl.includes('office.com')) && !iframeUrl.includes('action=embedview')) {
                     iframeUrl += iframeUrl.includes('?') ? '&action=embedview' : '?action=embedview';
                 }
                 UI.iframePlanilha.src = iframeUrl;

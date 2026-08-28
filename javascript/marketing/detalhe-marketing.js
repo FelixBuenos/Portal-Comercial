@@ -8,7 +8,8 @@ const MATERIAL_MAP = {
     'arte-padrao-para-delivery': 'Arte para Delivery',
     'arte-padrao-para-convenio': 'Arte para Convênio',
     'cafe-com-marketing': 'Café com Marketing',
-    'acao-saude': 'Ação Saúde'
+    'acao-saude': 'Ação Saúde',
+    'tag-de-materiais': 'TAG de Materiais'
 };
 
 const UI = {
