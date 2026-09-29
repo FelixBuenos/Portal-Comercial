@@ -1,4 +1,5 @@
 import { supabaseClient } from './servicos/supabaseClient.js';
+import { Auth } from './servicos/auth.js';
 
 const UI = {
     btnVoltar: document.getElementById('btn-voltar-modulo'),
@@ -19,30 +20,7 @@ class AdminController {
 
     // Camada de Segurança: Bloqueia acesso se não for administrador marketing ou mestre
     static async verificarAcesso() {
-        try {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // Verifica permissão e função na tabela usuarios_admin
-            const { data, error } = await supabaseClient
-                .from('usuarios_admin')
-                .select('funcao')
-                .eq('email', session.user.email)
-                .maybeSingle();
-
-            const funcao = data ? data.funcao : null;
-
-            if (error || !data || (funcao !== 'mestre' && funcao !== 'mestre_marketing')) {
-                alert("Acesso Negado: Apenas administradores Mestre ou Mestre Marketing têm permissão para acessar esta página.");
-                window.location.href = 'marketing.html';
-            }
-        } catch (err) {
-            console.error("Erro na verificação de acesso:", err);
-            window.location.href = 'index.html';
-        }
+        await Auth.verificarPermissao(['mestre', 'mestre_marketing'], 'marketing.html');
     }
 
     static vincularEventos() {

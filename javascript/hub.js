@@ -1,4 +1,5 @@
 import { supabaseClient } from './servicos/supabaseClient.js';
+import { Auth } from './servicos/auth.js';
 
 /* ==========================================================================
    ELEMENTOS DO DOM
@@ -9,7 +10,8 @@ const Elementos = {
     btnOfertas: document.getElementById('btn-acessar-gerencial'),
     btnIntegracao: document.getElementById('btn-acessar-integracao'),
     btnVoltarModulo: document.getElementById('btn-voltar-modulo'),
-    btnAdmin: document.getElementById('btn-admin')
+    btnAdmin: document.getElementById('btn-admin'),
+    btnManual: document.getElementById('btn-acessar-manual')
 };
 
 /* ==========================================================================
@@ -23,38 +25,9 @@ class HubController {
 
     // Camada de Segurança e Perfis (RBAC) com cache de sessão
     static async verificarAcesso() {
-        try {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            
-            if (!session) {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // Tenta validar usando a função cacheada para evitar lag visual
-            let funcao = sessionStorage.getItem('user_role');
-
-            if (funcao) {
-                this.aplicarSegurancaPorPerfil(funcao);
-            }
-
-            // Busca do banco em background para validar/atualizar o cache
-            const { data: adminData } = await supabaseClient
-                .from('usuarios_admin')
-                .select('funcao')
-                .eq('email', session.user.email)
-                .maybeSingle();
-
-            const funcaoBanco = adminData ? adminData.funcao : 'user';
-
-            if (funcao !== funcaoBanco) {
-                sessionStorage.setItem('user_role', funcaoBanco);
-                this.aplicarSegurancaPorPerfil(funcaoBanco);
-            }
-
-        } catch (err) {
-            console.error("Erro ao verificar sessão:", err);
-            window.location.href = 'index.html';
+        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_comercial', 'comercial', 'user'], 'selecao-modulo.html');
+        if (funcao) {
+            this.aplicarSegurancaPorPerfil(funcao);
         }
     }
 
@@ -90,14 +63,7 @@ class HubController {
         }
 
         Elementos.btnSair.addEventListener('click', async () => {
-            try {
-                await supabaseClient.auth.signOut();
-            } catch (err) {
-                console.error("Erro ao efetuar logout:", err);
-            } finally {
-                sessionStorage.clear(); // Limpa cache local
-                window.location.href = 'index.html';
-            }
+            await Auth.logout();
         });
 
         Elementos.btnEncartes.addEventListener('click', () => {
@@ -111,6 +77,13 @@ class HubController {
         Elementos.btnIntegracao.addEventListener('click', () => {
             window.location.href = 'integracao.html';
         });
+
+        // Navegação para a nova página do Manual de Ações
+        if (Elementos.btnManual) {
+            Elementos.btnManual.addEventListener('click', () => {
+                window.location.href = 'manual.html';
+            });
+        }
     }
 }
 

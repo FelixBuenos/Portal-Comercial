@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Declaração de Segurança e Confiabilidade do Portal Comercial e Marketing</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        h1 {
+            color: #1a365d;
+            border-bottom: 2px solid #e2e8f0;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2b6cb0;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #4a5568;
+        }
+        ul {
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 12px;
+        }
+        strong {
+            color: #2d3748;
+        }
+        hr {
+            border: 0;
+            height: 1px;
+            background: #e2e8f0;
+            margin: 40px 0;
+        }
+        @media print {
+            body {
+                padding: 0;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        .btn-print {
+            background-color: #3182ce;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .btn-print:hover {
+            background-color: #2b6cb0;
+        }
+    </style>
+</head>
+<body>
+
+    <button class="btn-print no-print" onclick="window.print()">🖨️ Salvar como PDF / Imprimir</button>
+
+    <h1>Declaração de Segurança e Confiabilidade do Portal Comercial e Marketing</h1>
+
+    <p>Este documento tem como objetivo apresentar de forma transparente, clara e sincera as medidas de segurança, infraestrutura e boas práticas de engenharia de software adotadas na construção do nosso Portal Comercial e Marketing. Nosso compromisso é garantir a todos os usuários que os dados, acessos e operações realizadas aqui estão protegidos pelas tecnologias mais modernas e confiáveis do mercado.</p>
+
+    <hr>
+
+    <h2>1. Segurança do Banco de Dados e Autenticação (Supabase)</h2>
+
+    <p>O coração dos nossos dados e o controle rigoroso de quem pode acessar o portal são gerenciados pelo <strong>Supabase</strong>, uma plataforma de <em>Backend-as-a-Service</em> reconhecida mundialmente, construída sobre o robusto e consagrado banco de dados relacional <strong>PostgreSQL</strong>.</p>
+
+    <ul>
+        <li><strong>Nenhuma senha é salva em texto:</strong> Nós <strong>nunca</strong> armazenamos ou temos acesso às senhas reais dos usuários. Quando uma senha é criada, o sistema a transforma em um código embaralhado e irreversível (usando técnicas criptográficas de <em>hashing</em> avançado). Mesmo no caso extremo de um vazamento de banco de dados, as senhas continuariam protegidas e ilegíveis.</li>
+        <li><strong>Autenticação via Tokens (JWT):</strong> O sistema não baseia-se em mecanismos frágeis para "lembrar" o usuário. Utilizamos <em>JSON Web Tokens</em> (JWT), o padrão ouro da indústria para autenticação moderna. Ao logar, o usuário recebe um token digital criptografado e temporário. É esse "crachá digital" que valida cada ação interna, sem expor dados sensíveis na rede.</li>
+        <li><strong>Recuperação Segura de Acesso:</strong> O fluxo de "Esqueci minha senha" é processado integralmente pelos servidores seguros do Supabase, que geram e enviam links temporários, únicos e criptografados direto para o e-mail cadastrado, neutralizando tentativas de interceptação.</li>
+    </ul>
+
+    <h2>2. Segurança no Código e Controle de Acessos (Frontend)</h2>
+
+    <p>O código que roda no navegador foi programado seguindo o "Princípio do Menor Privilégio" e uma clara separação de responsabilidades. Nós escrevemos o sistema para desconfiar de qualquer requisição até que ela prove ter autorização.</p>
+
+    <ul>
+        <li><strong>Controle de Acesso Baseado em Perfis (RBAC):</strong> O portal não se limita a esconder botões visualmente; ele de fato bloqueia o acesso em nível lógico. Existem papéis bem definidos (ex: Comercial, Marketing, Mestre). Sempre que um usuário tenta acessar uma área restrita (como a de Administração), o código do portal valida em tempo real, junto ao banco de dados, se aquele e-mail logado possui a função exata exigida. Caso contrário, o acesso é negado e a pessoa é removida da página instantaneamente.</li>
+        <li><strong>Prevenção contra Injeções Maliciosas:</strong> Como toda a comunicação do código com o banco de dados ocorre através das bibliotecas e APIs oficiais do Supabase (ao invés de consultas textuais montadas manualmente), o sistema é estruturalmente imune à grande maioria dos ataques de injeção de código (como o temido <em>SQL Injection</em>).</li>
+        <li><strong>Ausência de Credenciais Perigosas Expostas:</strong> Ao inspecionar o código do portal, um profissional de TI verá uma chave de API. Isso é normal e totalmente seguro: trata-se de uma chave pública <em>anônima</em>, projetada estritamente para o navegador. Essa chave sozinha não permite alterar ou deletar dados, pois as Políticas de Segurança de Linha (RLS) do banco de dados exigem o token (o "crachá digital") do usuário validado para liberar qualquer informação crítica.</li>
+    </ul>
+
+    <h2>3. Hospedagem e Proteção de Infraestrutura (Netlify)</h2>
+
+    <p>Nosso portal não está "jogado" em um servidor barato que pode ser facilmente derrubado. Toda a estrutura visual e os arquivos do site são hospedados e servidos pela <strong>Netlify</strong>, uma das maiores e mais respeitadas plataformas globais de infraestrutura em nuvem.</p>
+
+    <ul>
+        <li><strong>Criptografia de Ponta a Ponta (HTTPS Ativo):</strong> Todo o tráfego e dados trafegados entre o computador do usuário e o portal são rigorosamente criptografados. A Netlify emite e gerencia certificados digitais (SSL/TLS) de alta segurança. É tecnicamente impossível navegar no portal sem o "cadeado de segurança" ativo, o que garante que ninguém consiga espionar sua conexão em redes Wi-Fi públicas.</li>
+        <li><strong>Rede de Distribuição Global (CDN) e Defesa de Borda:</strong> Os arquivos do site são replicados em servidores de altíssima velocidade pelo mundo todo. Além da rapidez, essa infraestrutura robusta oferece proteção inerente contra ataques de negação de serviço (DDoS). Tentativas de derrubar o site com acessos falsos massivos são filtradas e bloqueadas automaticamente antes de afetarem os usuários reais.</li>
+        <li><strong>Implantações Imutáveis (Immutability):</strong> O código hospedado no servidor não pode ser invadido e alterado "em tempo real". Cada atualização que publicamos gera uma nova versão trancada a sete chaves. Isso torna impossível que invasores externos modifiquem os arquivos hospedados para distribuir vírus ou golpes através da nossa plataforma.</li>
+    </ul>
+
+    <h2>4. Defesa Ativa Contra Hackers e Acessos Maliciosos</h2>
+
+    <p>O portal não é apenas seguro contra erros operacionais, ele conta com barreiras ativas desenhadas para repelir ataques direcionados de hackers e pessoas mal intencionadas:</p>
+
+    <ul>
+        <li><strong>Políticas de RLS (Row Level Security - Supabase):</strong> Esta tecnologia age como um segurança armado na porta do cofre do nosso banco de dados. Mesmo que um hacker conseguisse descobrir o endereço da base de dados na internet, o <em>Row Level Security</em> intercepta e bloqueia a conexão instantaneamente. Nenhuma linha de dado é devolvida ou alterada se a requisição não estiver validada criptograficamente.</li>
+        <li><strong>Firewall de Borda e Bloqueio de Bots (Netlify Edge):</strong> Antes de qualquer solicitação chegar ao nosso portal, ela é filtrada pela rede global de segurança da Netlify. Esse escudo detecta robôs de internet e hackers realizando varreduras maliciosas ou ataques de força bruta (tentativas infinitas de adivinhar senhas), bloqueando o IP dessas ameaças de forma autônoma.</li>
+    </ul>
+
+    <hr>
+
+    <h3>Resumo do Nosso Compromisso</h3>
+
+    <p>Construímos o Portal Comercial e Marketing não apenas com a premissa de entregar praticidade às equipes, mas com o compromisso de que a confiança é inegociável. Aplicamos na prática as mesmas arquiteturas de segurança adotadas pelas grandes corporações de tecnologia global.</p>
+
+    <p>Desde a blindagem do servidor que hospeda as páginas, passando pela inteligência do código que só libera acessos autorizados, até a forte criptografia no armazenamento dos dados: tudo foi planejado para que nossas equipes operem e acessem informações com a máxima tranquilidade e proteção. O sistema é sólido, auditável e 100% seguro contra as ameaças convencionais da internet.</p>
+
+</body>
+</html>

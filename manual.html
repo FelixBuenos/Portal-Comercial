@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual de Ações Comerciais</title>
+    
+    <link rel="stylesheet" href="css/hub.css">
+    <link rel="icon" type="image/png" href="imagens/LOGO_-_Conviva_+Princing38252050767201495.png">
+    
+    <style>
+        .manual-container {
+            background: var(--hub-surface);
+            border-radius: var(--hub-radius);
+            padding: 50px;
+            max-width: 600px;
+            margin: 0 auto;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border-top: 5px solid var(--color-vermelho-txt);
+        }
+        .manual-icon {
+            font-size: 3rem;
+            color: var(--color-vermelho-txt);
+            margin-bottom: 20px;
+        }
+        .manual-title {
+            color: var(--hub-text);
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        .manual-desc {
+            color: var(--hub-text-muted);
+            margin-bottom: 40px;
+        }
+        .manual-filter-group {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        .manual-label {
+            display: block;
+            font-size: 0.95rem;
+            color: #475569;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+        .manual-input {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            font-family: var(--hub-font);
+            font-size: 1rem;
+            color: #334155;
+            background: #f8fafc;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .manual-input:focus {
+            border-color: var(--color-vermelho-txt);
+            box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
+        }
+        .btn-download-manual {
+            display: inline-flex;
+            justify-content: center;
+            width: 100%;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-family: var(--hub-font);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s var(--hub-ease);
+            text-decoration: none;
+            background: var(--color-vermelho-btn);
+            color: var(--color-vermelho-txt);
+        }
+        .btn-download-manual:hover {
+            background: var(--color-vermelho-txt);
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="hub-navbar">
+        <div class="nav-container">
+            <img src="imagens/Logo Conviva branco-02.png" alt="Logo Conviva" class="nav-logo">
+            <span class="nav-title">Portal Comercial</span>
+            <div style="display: flex; gap: 10px; align-items: center;">
+                <button id="btn-voltar-hub" class="btn-sair" style="background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.15);">
+                    ← Voltar
+                </button>
+                <button id="btn-sair" class="btn-sair">
+                    <span class="icon-sair"></span> Sair
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="hub-main-container">
+        <div class="manual-container">
+            <div class="manual-icon"></div>
+            <h1 class="manual-title">Manual de Ações</h1>
+            <p class="manual-desc">Selecione o mês e o ano para acessar os arquivos correspondentes.</p>
+            
+            <div class="manual-filter-group">
+                <label for="filtro-mes" class="manual-label">Mês de Referência</label>
+                <input type="month" id="filtro-mes" class="manual-input">
+            </div>
+
+            <a id="link-download" href="#" target="_blank" class="btn-download-manual" style="display: none;">
+                Acessar o Manual de Ações Comerciais <span>→</span>
+            </a>
+        </div>
+    </main>
+
+    <script type="module" src="javascript/manual.js?v=1"></script>
+</body>
+</html>

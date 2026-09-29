@@ -1,4 +1,5 @@
 import { supabaseClient } from './servicos/supabaseClient.js';
+import { Auth } from './servicos/auth.js';
 
 const UI = {
     btnVoltar: document.getElementById('btn-voltar-hub'),
@@ -8,6 +9,7 @@ const UI = {
     
     inputEncarte: document.getElementById('input-encarte'),
     inputOfertas: document.getElementById('input-ofertas'),
+    inputManual: document.getElementById('input-manual'),
     
     txtContainer: document.getElementById('txt-dinamicos-container'),
     
@@ -24,30 +26,7 @@ class AdminComercialController {
 
     // Camada de Segurança: Bloqueia acesso se não for administrador comercial ou mestre
     static async verificarAcesso() {
-        try {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // Verifica permissão e função na tabela usuarios_admin
-            const { data, error } = await supabaseClient
-                .from('usuarios_admin')
-                .select('funcao')
-                .eq('email', session.user.email)
-                .maybeSingle();
-
-            const funcao = data ? data.funcao : null;
-
-            if (error || !data || (funcao !== 'mestre' && funcao !== 'mestre_comercial')) {
-                alert("Acesso Negado: Apenas administradores Mestre ou Mestre Comercial têm permissão para acessar esta página.");
-                window.location.href = 'hub.html';
-            }
-        } catch (err) {
-            console.error("Erro na verificação de acesso:", err);
-            window.location.href = 'index.html';
-        }
+        await Auth.verificarPermissao(['mestre', 'mestre_comercial'], 'hub.html');
     }
 
     static vincularEventos() {
@@ -168,7 +147,18 @@ class AdminComercialController {
                 UI.inputOfertas.value = ofertasData.url_ofertas;
             }
 
-            // 3. Carrega arquivos de integração TXT
+            // 3. Carrega link do Manual de Ações
+            const { data: manualData } = await supabaseClient
+                .from('manuais')
+                .select('url_sharepoint')
+                .eq('data_manual', mesSelecionado + '-01')
+                .maybeSingle();
+
+            if (manualData) {
+                UI.inputManual.value = manualData.url_sharepoint;
+            }
+
+            // 4. Carrega arquivos de integração TXT
             const { data: integracoesData } = await supabaseClient
                 .from('integracoes')
                 .select('sistema_erp, descricao, url_txt')
@@ -252,7 +242,7 @@ class AdminComercialController {
 
             const resultadosUpload = (await Promise.all(promessasUpload)).filter(res => res !== null && res.url !== '');
 
-            // 2. Grava links das planilhas (Encarte e Ofertas) se preenchidos
+            // 2. Grava links das planilhas (Encarte e Ofertas) se preenchidos ou exclui se vazios
             if (UI.inputEncarte.value.trim()) {
                 await supabaseClient
                     .from('planilhas')
@@ -260,6 +250,11 @@ class AdminComercialController {
                         data_encarte: mesSelecionado + '-01',
                         url_google: UI.inputEncarte.value.trim()
                     }, { onConflict: 'data_encarte' });
+            } else {
+                await supabaseClient
+                    .from('planilhas')
+                    .delete()
+                    .eq('data_encarte', mesSelecionado + '-01');
             }
 
             if (UI.inputOfertas.value.trim()) {
@@ -269,6 +264,30 @@ class AdminComercialController {
                         data_oferta: mesSelecionado + '-01',
                         url_ofertas: UI.inputOfertas.value.trim()
                     }, { onConflict: 'data_oferta' });
+            } else {
+                await supabaseClient
+                    .from('ofertas')
+                    .delete()
+                    .eq('data_oferta', mesSelecionado + '-01');
+            }
+
+            if (UI.inputManual.value.trim()) {
+                const { error: manualError } = await supabaseClient
+                    .from('manuais')
+                    .upsert({
+                        data_manual: mesSelecionado + '-01',
+                        url_sharepoint: UI.inputManual.value.trim()
+                    }, { onConflict: 'data_manual' });
+                    
+                if (manualError) {
+                    console.error("Erro ao salvar Manual:", manualError);
+                    throw manualError;
+                }
+            } else {
+                await supabaseClient
+                    .from('manuais')
+                    .delete()
+                    .eq('data_manual', mesSelecionado + '-01');
             }
 
             // 3. Deleta registros antigos de integração daquele mês
@@ -311,6 +330,7 @@ class AdminComercialController {
     static limparCampos() {
         UI.inputEncarte.value = '';
         UI.inputOfertas.value = '';
+        UI.inputManual.value = '';
         UI.txtContainer.innerHTML = '';
     }
 

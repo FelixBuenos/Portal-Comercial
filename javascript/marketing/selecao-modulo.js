@@ -1,4 +1,5 @@
 import { supabaseClient } from '../servicos/supabaseClient.js';
+import { Auth } from '../servicos/auth.js';
 
 class SelecaoModuloController {
     static init() {
@@ -8,38 +9,9 @@ class SelecaoModuloController {
 
     // Camada de Segurança e Controle de Acesso Baseado em Perfis (RBAC) com cache local
     static async verificarAcesso() {
-        try {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // Tenta obter a função (role) do cache instantâneo de sessão
-            let funcao = sessionStorage.getItem('user_role');
-
-            if (funcao) {
-                this.configurarVisualPorPerfil(funcao);
-            }
-
-            // Busca do banco em background para atualizar/validar o cache
-            const { data: adminData } = await supabaseClient
-                .from('usuarios_admin')
-                .select('funcao')
-                .eq('email', session.user.email)
-                .maybeSingle();
-
-            const funcaoBanco = adminData ? adminData.funcao : 'user';
-
-            // Se o cache estiver desatualizado, atualiza o visual
-            if (funcao !== funcaoBanco) {
-                sessionStorage.setItem('user_role', funcaoBanco);
-                this.configurarVisualPorPerfil(funcaoBanco);
-            }
-
-        } catch (err) {
-            console.error("Erro na verificação de acesso:", err);
-            window.location.href = 'index.html';
+        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_comercial', 'comercial', 'marketing', 'user'], 'index.html');
+        if (funcao) {
+            this.configurarVisualPorPerfil(funcao);
         }
     }
 
@@ -112,14 +84,7 @@ class SelecaoModuloController {
         // Lógica de Logout
         if (btnSair) {
             btnSair.addEventListener('click', async () => {
-                try {
-                    await supabaseClient.auth.signOut();
-                } catch (err) {
-                    console.error("Erro ao efetuar logout:", err);
-                } finally {
-                    sessionStorage.clear(); // Limpa cache local
-                    window.location.href = 'index.html';
-                }
+                await Auth.logout();
             });
         }
     }

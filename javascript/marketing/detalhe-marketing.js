@@ -1,4 +1,5 @@
 import { supabaseClient } from '../servicos/supabaseClient.js';
+import { Auth } from '../servicos/auth.js';
 
 const MATERIAL_MAP = {
     'horario-de-funcionamento': 'Horário de Funcionamento',
@@ -26,16 +27,9 @@ class DetalheMarketingController {
 
     // Camada de Segurança: Proteção de Rota
     static async verificarAcesso() {
-        try {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                window.location.href = 'index.html';
-            } else {
-                this.carregarDados();
-            }
-        } catch (err) {
-            console.error("Erro na verificação de acesso:", err);
-            window.location.href = 'index.html';
+        const session = await Auth.verificarSessao();
+        if (session) {
+            this.carregarDados();
         }
     }
 

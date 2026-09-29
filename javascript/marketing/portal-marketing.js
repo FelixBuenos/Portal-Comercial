@@ -1,4 +1,5 @@
 import { supabaseClient } from '../servicos/supabaseClient.js';
+import { Auth } from '../servicos/auth.js';
 
 const UI = {
     btnVoltar: document.getElementById('btn-voltar-hub'),
@@ -14,37 +15,9 @@ class PortalMarketingController {
 
     // Camada de Segurança e Perfis (RBAC) com cache local
     static async verificarAcesso() {
-        try {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (!session) {
-                window.location.href = 'index.html';
-                return;
-            }
-
-            // Tenta obter a função (role) do cache instantâneo de sessão para evitar lag visual
-            let funcao = sessionStorage.getItem('user_role');
-
-            if (funcao) {
-                this.aplicarSegurancaPorPerfil(funcao);
-            }
-
-            // Busca do banco em background para validar/atualizar o cache
-            const { data: adminData } = await supabaseClient
-                .from('usuarios_admin')
-                .select('funcao')
-                .eq('email', session.user.email)
-                .maybeSingle();
-
-            const funcaoBanco = adminData ? adminData.funcao : 'user';
-
-            if (funcao !== funcaoBanco) {
-                sessionStorage.setItem('user_role', funcaoBanco);
-                this.aplicarSegurancaPorPerfil(funcaoBanco);
-            }
-
-        } catch (err) {
-            console.error("Erro na verificação de acesso:", err);
-            window.location.href = 'index.html';
+        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_marketing', 'marketing', 'user'], 'selecao-modulo.html');
+        if (funcao) {
+            this.aplicarSegurancaPorPerfil(funcao);
         }
     }
 

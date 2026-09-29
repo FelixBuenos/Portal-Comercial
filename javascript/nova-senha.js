@@ -35,8 +35,8 @@ btnSalvar.addEventListener('click', async () => {
             btnSalvar.disabled = false;
         } else {
             alert("Senha atualizada com sucesso!");
-            // Redireciona para o Hub Principal já com o acesso liberado
-            window.location.href = 'hub.html';
+            // Redireciona para a Seleção de Módulo já com o acesso liberado
+            window.location.href = 'selecao-modulo.html';
         }
     } catch (err) {
         console.error("Erro inesperado ao atualizar senha:", err);

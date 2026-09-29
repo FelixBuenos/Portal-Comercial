@@ -1,4 +1,5 @@
 import { supabaseClient } from './servicos/supabaseClient.js';
+import { Auth } from './servicos/auth.js';
 
 const Config = {
     MESES_PTBR: ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
@@ -26,17 +27,9 @@ class OfertasController {
 
     // Camada de Segurança
     static async verificarAcesso() {
-        try {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            
-            if (!session) {
-                window.location.href = 'index.html';
-            } else {
-                this.carregarDadosDoSupabase();
-            }
-        } catch (err) {
-            console.error("Erro na verificação de acesso:", err);
-            window.location.href = 'index.html';
+        const session = await Auth.verificarSessao();
+        if (session) {
+            this.carregarDadosDoSupabase();
         }
     }
 
