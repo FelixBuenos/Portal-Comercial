@@ -9,7 +9,7 @@ class SelecaoModuloController {
 
     // Camada de Segurança e Controle de Acesso Baseado em Perfis (RBAC) com cache local
     static async verificarAcesso() {
-        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_comercial', 'comercial', 'marketing', 'user'], 'index.html');
+        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_comercial', 'mestre_marketing', 'comercial', 'marketing', 'user'], 'index.html');
         if (funcao) {
             this.configurarVisualPorPerfil(funcao);
         }
@@ -36,7 +36,7 @@ class SelecaoModuloController {
             cardComercial.querySelector('button').style.background = '';
         }
 
-        if (funcao === 'comercial') {
+        if (funcao === 'comercial' || funcao === 'mestre_comercial') {
             if (cardMarketing) {
                 cardMarketing.style.opacity = '0.3';
                 cardMarketing.style.cursor = 'not-allowed';
@@ -44,7 +44,7 @@ class SelecaoModuloController {
                 cardMarketing.querySelector('button').innerText = 'Acesso Negado';
                 cardMarketing.querySelector('button').style.background = '#94a3b8';
             }
-        } else if (funcao === 'marketing') {
+        } else if (funcao === 'marketing' || funcao === 'mestre_marketing') {
             if (cardComercial) {
                 cardComercial.style.opacity = '0.3';
                 cardComercial.style.cursor = 'not-allowed';
@@ -64,7 +64,7 @@ class SelecaoModuloController {
         if (cardComercial) {
             cardComercial.addEventListener('click', () => {
                 const funcao = sessionStorage.getItem('user_role');
-                if (funcao === 'marketing') {
+                if (funcao === 'marketing' || funcao === 'mestre_marketing') {
                     return; // Bloqueia clique se for perfil exclusivo do marketing
                 }
                 window.location.href = 'hub.html';
@@ -74,7 +74,7 @@ class SelecaoModuloController {
         if (cardMarketing) {
             cardMarketing.addEventListener('click', () => {
                 const funcao = sessionStorage.getItem('user_role');
-                if (funcao === 'comercial') {
+                if (funcao === 'comercial' || funcao === 'mestre_comercial') {
                     return; // Bloqueia clique se for perfil exclusivo comercial
                 }
                 window.location.href = 'marketing.html';
