@@ -15,7 +15,7 @@ class PortalMarketingController {
 
     // Camada de Segurança e Perfis (RBAC) com cache local
     static async verificarAcesso() {
-        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_marketing', 'marketing', 'user'], 'selecao-modulo.html');
+        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_marketing', 'marketing', 'user', 'visualizador'], 'selecao-modulo.html');
         if (funcao) {
             this.aplicarSegurancaPorPerfil(funcao);
         }

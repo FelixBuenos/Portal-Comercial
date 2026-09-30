@@ -25,7 +25,7 @@ class HubController {
 
     // Camada de Segurança e Perfis (RBAC) com cache de sessão
     static async verificarAcesso() {
-        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_comercial', 'comercial', 'user'], 'selecao-modulo.html');
+        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_comercial', 'comercial', 'user', 'visualizador'], 'selecao-modulo.html');
         if (funcao) {
             this.aplicarSegurancaPorPerfil(funcao);
         }

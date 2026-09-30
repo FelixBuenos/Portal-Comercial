@@ -9,7 +9,7 @@ class SelecaoModuloController {
 
     // Camada de Segurança e Controle de Acesso Baseado em Perfis (RBAC) com cache local
     static async verificarAcesso() {
-        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_comercial', 'mestre_marketing', 'comercial', 'marketing', 'user'], 'index.html');
+        const funcao = await Auth.verificarPermissao(['mestre', 'mestre_comercial', 'mestre_marketing', 'comercial', 'marketing', 'user', 'visualizador'], 'index.html');
         if (funcao) {
             this.configurarVisualPorPerfil(funcao);
         }
