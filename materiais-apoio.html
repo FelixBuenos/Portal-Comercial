@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manual de Ações Comerciais</title>
+    <title>Materiais de Apoio - Portal Comercial</title>
     
     <link rel="stylesheet" href="css/hub.css">
-    <link rel="icon" type="image/png" href="imagens/LOGO_-_Conviva_+Princing38252050767201495.png">
     
     <style>
         .manual-container {
@@ -20,12 +19,7 @@
             margin: 0 auto;
             text-align: center;
             box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-            border-top: 5px solid #ef4444;
-        }
-        .manual-icon {
-            font-size: 3rem;
-            color: #ef4444;
-            margin-bottom: 20px;
+            border-top: 5px solid #f59e0b; /* Accent cor laranja/amarela */
         }
         .manual-title {
             color: #ffffff;
@@ -64,8 +58,8 @@
             filter: invert(1);
         }
         .manual-input:focus {
-            border-color: #ef4444;
-            box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+            border-color: #f59e0b;
+            box-shadow: 0 0 0 3px rgba(245, 158, 11, 0.1);
         }
         .btn-download-manual {
             display: inline-flex;
@@ -82,24 +76,20 @@
             gap: 10px;
             transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             text-decoration: none;
-            background: rgba(239, 68, 68, 0.15);
-            color: #f87171;
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
         }
         .btn-download-manual:hover {
-            background: #ef4444;
+            background: #f59e0b;
             color: #ffffff;
         }
     </style>
 </head>
 <body>
-
-
-
     <main class="hub-main-container" style="margin-top: 50px;">
         <div class="manual-container">
-            <div class="manual-icon"></div>
-            <h1 class="manual-title">Manual de Ações</h1>
-            <p class="manual-desc">Selecione o mês e o ano para acessar os arquivos correspondentes.</p>
+            <h1 class="manual-title">Materiais de Apoio</h1>
+            <p class="manual-desc">Selecione o mês e o ano para acessar os conteúdos de apoio correspondentes.</p>
             
             <div class="manual-filter-group">
                 <label for="filtro-mes" class="manual-label">Mês de Referência</label>
@@ -107,11 +97,11 @@
             </div>
 
             <a id="link-download" href="#" target="_blank" class="btn-download-manual" style="display: none;">
-                Acessar o Manual de Ações Comerciais <span>→</span>
+                Acessar Materiais de Apoio <span>→</span>
             </a>
         </div>
     </main>
 
-    <script type="module" src="javascript/manual.js?v=1"></script>
+    <script type="module" src="javascript/materiais-apoio.js?v=1"></script>
 </body>
 </html>

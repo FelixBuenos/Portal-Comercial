@@ -9,9 +9,7 @@ const Config = {
    ELEMENTOS DO DOM
    ========================================================================= */
 const UI = {
-    btnVoltarHub: document.getElementById('btn-voltar-hub'),
     selectMes: document.getElementById('select-mes'),
-    btnVisualizar: document.getElementById('btn-visualizar'),
     btnExportar: document.getElementById('btn-exportar'),
     iframePlanilha: document.getElementById('iframe-planilha'),
     loader: document.getElementById('loader-planilha')
@@ -56,30 +54,12 @@ class EncartesController {
     }
 
     static vincularEventos() {
-        UI.btnVoltarHub.addEventListener('click', () => {
-            window.location.href = 'hub.html';
-        });
-
         // Oculta loader quando o iframe terminar de carregar os dados do Google Sheets
         if (UI.iframePlanilha) {
             UI.iframePlanilha.addEventListener('load', () => {
                 this.ocultarLoader();
             });
         }
-
-        UI.btnVisualizar.addEventListener('click', () => {
-            const urlSelecionada = UI.selectMes.value;
-            if (urlSelecionada) {
-                this.mostrarLoader();
-                let iframeUrl = urlSelecionada;
-                if (iframeUrl.includes('google.com/spreadsheets') && iframeUrl.includes('/edit')) {
-                    iframeUrl = iframeUrl.replace(/\/edit.*/, '/preview');
-                } else if ((iframeUrl.includes('sharepoint.com') || iframeUrl.includes('office.com')) && !iframeUrl.includes('action=embedview')) {
-                    iframeUrl += iframeUrl.includes('?') ? '&action=embedview' : '?action=embedview';
-                }
-                UI.iframePlanilha.src = iframeUrl;
-            }
-        });
 
         UI.selectMes.addEventListener('change', () => {
             const urlSelecionada = UI.selectMes.value;

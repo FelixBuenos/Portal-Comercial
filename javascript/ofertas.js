@@ -9,7 +9,6 @@ const Config = {
    ELEMENTOS DO DOM
    ========================================================================== */
 const UI = {
-    btnVoltarHub: document.getElementById('btn-voltar-hub'),
     selectMes: document.getElementById('select-mes'),
     btnExportar: document.getElementById('btn-exportar'), 
     iframePlanilha: document.getElementById('iframe-planilha'),
@@ -55,10 +54,6 @@ class OfertasController {
     }
 
     static vincularEventos() {
-        UI.btnVoltarHub.addEventListener('click', () => {
-            window.location.href = 'hub.html';
-        });
-
         // Oculta loader quando a planilha Google Sheets terminar de carregar
         if (UI.iframePlanilha) {
             UI.iframePlanilha.addEventListener('load', () => {

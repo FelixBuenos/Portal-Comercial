@@ -19,8 +19,16 @@ class SelecaoModuloController {
     static configurarVisualPorPerfil(funcao) {
         const cardComercial = document.getElementById('card-comercial');
         const cardMarketing = document.getElementById('card-marketing');
+        const cardNovosNegocios = document.getElementById('card-novos-negocios');
 
         // Restaura estados originais antes de aplicar a regra
+        if (cardNovosNegocios) {
+            cardNovosNegocios.style.opacity = '1';
+            cardNovosNegocios.style.cursor = 'pointer';
+            cardNovosNegocios.querySelector('.card-description').innerText = 'Acesse a planilha com o endereço das empresas conveniadas e oportunidades de negócios.';
+            cardNovosNegocios.querySelector('button').innerText = 'Acessar Novos Negócios →';
+            cardNovosNegocios.querySelector('button').style.background = '';
+        }
         if (cardMarketing) {
             cardMarketing.style.opacity = '1';
             cardMarketing.style.cursor = 'pointer';
@@ -52,6 +60,13 @@ class SelecaoModuloController {
                 cardComercial.querySelector('button').innerText = 'Acesso Negado';
                 cardComercial.querySelector('button').style.background = '#94a3b8';
             }
+            if (cardNovosNegocios) {
+                cardNovosNegocios.style.opacity = '0.3';
+                cardNovosNegocios.style.cursor = 'not-allowed';
+                cardNovosNegocios.querySelector('.card-description').innerText = 'Acesso restrito para o seu perfil.';
+                cardNovosNegocios.querySelector('button').innerText = 'Acesso Negado';
+                cardNovosNegocios.querySelector('button').style.background = '#94a3b8';
+            }
         }
     }
 
@@ -59,6 +74,7 @@ class SelecaoModuloController {
     static configurarCliquesEstaticos() {
         const cardComercial = document.getElementById('card-comercial');
         const cardMarketing = document.getElementById('card-marketing');
+        const cardNovosNegocios = document.getElementById('card-novos-negocios');
         const btnSair = document.getElementById('btn-sair');
 
         if (cardComercial) {
@@ -78,6 +94,16 @@ class SelecaoModuloController {
                     return; // Bloqueia clique se for perfil exclusivo comercial
                 }
                 window.location.href = 'marketing.html';
+            });
+        }
+
+        if (cardNovosNegocios) {
+            cardNovosNegocios.addEventListener('click', () => {
+                const funcao = sessionStorage.getItem('user_role');
+                if (funcao === 'marketing' || funcao === 'mestre_marketing') {
+                    return; // Bloqueia clique se for perfil exclusivo marketing
+                }
+                window.location.href = 'novos-negocios.html';
             });
         }
 

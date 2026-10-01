@@ -2,7 +2,7 @@ import { supabaseClient } from "./servicos/supabaseClient.js";
 import { Auth } from "./servicos/auth.js";
 
 document.addEventListener("DOMContentLoaded", async () => {
-	// Verifica Sessão centralizada
+	// Verifica Sessão
 	const session = await Auth.verificarSessao();
 	if (!session) return;
 
@@ -15,10 +15,11 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         if (valor) {
             try {
+                // OBS: Ajuste o nome da tabela e da coluna conforme criado no Supabase
                 const { data, error } = await supabaseClient
-                    .from('manuais')
+                    .from('materiais_apoio')
                     .select('url_sharepoint')
-                    .eq('data_manual', valor + '-01')
+                    .eq('data_referencia', valor + '-01')
                     .maybeSingle();
 
                 if (error) throw error;
@@ -28,10 +29,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                     linkDownload.style.display = "inline-flex";
                 } else {
                     linkDownload.style.display = "none";
-                    alert("Ainda não há manual cadastrado para este mês.");
+                    alert("Ainda não há material cadastrado para este mês.");
                 }
             } catch (err) {
-                console.error("Erro ao buscar link do manual:", err);
+                console.error("Erro ao buscar link do material:", err);
                 linkDownload.style.display = "none";
             }
         } else {

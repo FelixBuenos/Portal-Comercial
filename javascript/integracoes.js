@@ -8,7 +8,6 @@ const Config = {
 let dadosGeraisCache = []; 
 
 const UI = {
-    btnVoltarHub: document.getElementById('btn-voltar-hub'),
     selectMes: document.getElementById('select-mes'),
     selectPlataforma: document.getElementById('select-plataforma'),
     selectArquivo: document.getElementById('select-arquivo'),
@@ -29,12 +28,6 @@ class IntegracaoController {
     }
 
     static vincularEventos() {
-        if (UI.btnVoltarHub) {
-            UI.btnVoltarHub.addEventListener('click', () => {
-                window.location.href = 'hub.html';
-            });
-        }
-
         UI.selectMes.addEventListener('change', () => {
             this.atualizarDropdownPlataformas();
         });

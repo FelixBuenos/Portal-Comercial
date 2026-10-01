@@ -2,7 +2,6 @@ import { supabaseClient } from './servicos/supabaseClient.js';
 import { Auth } from './servicos/auth.js';
 
 const UI = {
-    btnVoltar: document.getElementById('btn-voltar-hub'),
     btnSalvar: document.getElementById('btn-salvar'),
     btnAdicionarTxt: document.getElementById('btn-adicionar-txt'),
     inputMes: document.getElementById('input-mes'),
@@ -10,6 +9,7 @@ const UI = {
     inputEncarte: document.getElementById('input-encarte'),
     inputOfertas: document.getElementById('input-ofertas'),
     inputManual: document.getElementById('input-manual'),
+    inputMateriais: document.getElementById('input-materiais'),
     
     txtContainer: document.getElementById('txt-dinamicos-container'),
     
@@ -30,11 +30,7 @@ class AdminComercialController {
     }
 
     static vincularEventos() {
-        if (UI.btnVoltar) {
-            UI.btnVoltar.addEventListener('click', () => {
-                window.location.href = 'hub.html';
-            });
-        }
+
 
         if (UI.inputMes) {
             UI.inputMes.addEventListener('change', () => {
@@ -156,6 +152,17 @@ class AdminComercialController {
 
             if (manualData) {
                 UI.inputManual.value = manualData.url_sharepoint;
+            }
+
+            // 3.5 Carrega link de Materiais de Apoio
+            const { data: materiaisData } = await supabaseClient
+                .from('materiais_apoio')
+                .select('url_sharepoint')
+                .eq('data_referencia', mesSelecionado + '-01')
+                .maybeSingle();
+
+            if (materiaisData) {
+                UI.inputMateriais.value = materiaisData.url_sharepoint;
             }
 
             // 4. Carrega arquivos de integração TXT
@@ -290,6 +297,25 @@ class AdminComercialController {
                     .eq('data_manual', mesSelecionado + '-01');
             }
 
+            if (UI.inputMateriais.value.trim()) {
+                const { error: materiaisError } = await supabaseClient
+                    .from('materiais_apoio')
+                    .upsert({
+                        data_referencia: mesSelecionado + '-01',
+                        url_sharepoint: UI.inputMateriais.value.trim()
+                    }, { onConflict: 'data_referencia' });
+                    
+                if (materiaisError) {
+                    console.error("Erro ao salvar Materiais de Apoio:", materiaisError);
+                    throw materiaisError;
+                }
+            } else {
+                await supabaseClient
+                    .from('materiais_apoio')
+                    .delete()
+                    .eq('data_referencia', mesSelecionado + '-01');
+            }
+
             // 3. Deleta registros antigos de integração daquele mês
             await supabaseClient
                 .from('integracoes')
@@ -315,7 +341,13 @@ class AdminComercialController {
             // Sucesso: exibe êxito e redireciona
             this.exibirAlerta(UI.alertSuccess);
             setTimeout(() => {
-                window.location.href = 'hub.html';
+                if (window.parent && window.parent.document) {
+                    const btn = window.parent.document.querySelector(`.nav-item[data-target='hub-welcome.html']`);
+                    if (btn) btn.click();
+                    else window.location.href = 'hub-welcome.html';
+                } else {
+                    window.location.href = 'hub-welcome.html';
+                }
             }, 1500);
 
         } catch (err) {
@@ -331,6 +363,7 @@ class AdminComercialController {
         UI.inputEncarte.value = '';
         UI.inputOfertas.value = '';
         UI.inputManual.value = '';
+        if(UI.inputMateriais) UI.inputMateriais.value = '';
         UI.txtContainer.innerHTML = '';
     }
 

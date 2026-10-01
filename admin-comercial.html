@@ -150,18 +150,9 @@
 
 <body>
 
-    <nav class="hub-navbar">
-        <div class="nav-container">
-            <div style="display: flex; align-items: center; gap: 15px;">
-                <img src="imagens/Logo Conviva branco-02.png" alt="Rede Conviva" class="nav-logo">
-                <button class="btn-voltar" id="btn-voltar-hub">← Voltar ao Menu</button>
-            </div>
-            <span class="nav-title">Painel Admin Comercial</span>
-            <div style="width: 120px;"></div> <!-- Espaçador para manter o título centralizado -->
-        </div>
-    </nav>
 
-    <main class="marketing-main-container">
+
+    <main class="marketing-main-container" style="margin-top: 50px;">
         <div class="admin-card">
             <h2 class="section-header">Gerenciador do Portal Comercial</h2>
 
@@ -202,6 +193,13 @@
                         placeholder="https://conviva.sharepoint.com/...">
                 </div>
 
+                <!-- Materiais de Apoio (SharePoint) -->
+                <div class="form-group">
+                    <label for="input-materiais">Link de Materiais de Apoio</label>
+                    <input type="url" id="input-materiais" class="form-control"
+                        placeholder="https://conviva.sharepoint.com/...">
+                </div>
+
                 <!-- Arquivos de Integração TXT -->
                 <div class="form-group" style="margin-top: 35px; text-align: left;">
                     <label
@@ -224,7 +222,7 @@
         </div>
     </main>
 
-    <script type="module" src="javascript/admin-comercial.js?v=4"></script>
+    <script type="module" src="javascript/admin-comercial.js?v=6"></script>
 </body>
 
 </html>

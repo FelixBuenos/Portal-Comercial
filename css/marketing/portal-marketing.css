@@ -15,13 +15,24 @@ body {
     display: flex;
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- Navbar Superior --- */
 .hub-navbar {
     width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: rgba(0, 18, 41, 0.4);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     position: fixed;
     top: 0;
@@ -30,15 +41,16 @@ body {
 }
 
 .nav-container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 15px 30px;
+    padding: 0 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.nav-logo { max-height: 35px; width: auto; }
+.nav-logo { max-height: 55px; width: auto; }
 
 .nav-title {
     font-size: 1.1rem;
@@ -89,7 +101,10 @@ body {
 
 /* --- Cards de Materiais com Detalhes em Vermelho --- */
 .card-material {
-    background: #ffffff;
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 20px;
     padding: 40px 35px;
     display: flex;
@@ -113,14 +128,14 @@ body {
     left: 0; 
     right: 0; 
     height: 5px; 
-    background: #fcfcfd; 
+    background: #dc2626; 
 }
 
 /* Textos e Tags internas */
 .tag-categoria {
     width: fit-content;
-    background: #fef2f2;
-    color: #dc2626;
+    background: rgba(220, 38, 38, 0.15);
+    color: #ef4444;
     padding: 4px 12px;
     border-radius: 20px;
     font-size: 0.72rem;
@@ -131,14 +146,14 @@ body {
 }
 
 .material-title { 
-    color: #0f172a; 
+    color: #ffffff; 
     font-size: 1.25rem; 
     font-weight: 700; 
     margin-bottom: 12px; 
 }
 
 .material-description { 
-    color: #475569; 
+    color: #94a3b8; 
     font-size: 0.9rem; 
     line-height: 1.6; 
     margin-bottom: 35px; 

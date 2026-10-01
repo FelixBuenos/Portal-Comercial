@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal Novos Negócios - Rede Conviva</title>
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-light: #003a7a; 
+            --bg-dark: #001229;
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+            --primary: #16a34a;
+            --primary-hover: #15803d;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Sora', sans-serif;
+            background: linear-gradient(135deg, var(--bg-light) 0%, var(--bg-dark) 100%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            overflow-x: hidden;
+            animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Navbar Glassmorphism --- */
+        .premium-navbar {
+            width: 100%;
+            height: 80px;
+            background: rgba(0, 18, 41, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--glass-border);
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar-content {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-logo {
+            max-height: 55px;
+            object-fit: contain;
+        }
+
+        .nav-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.9);
+            border-left: 1px solid rgba(255,255,255,0.2);
+            padding-left: 20px;
+        }
+
+        .btn-voltar {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-main);
+            text-decoration: none;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            border: 1px solid transparent;
+        }
+        .btn-voltar:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
+        /* --- Container Principal --- */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin-top: 50px;
+            margin-bottom: 50px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        .page-header {
+            text-align: left;
+        }
+
+        .page-header h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            max-width: 700px;
+            line-height: 1.6;
+        }
+
+        /* --- Glassmorphism Panel --- */
+        .planilha-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            border-bottom: 1px solid var(--glass-border);
+            padding-bottom: 20px;
+        }
+
+        .panel-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .panel-title svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary);
+        }
+
+        .btn-download {
+            background: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 15px rgba(22, 163, 74, 0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .btn-download:hover {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(22, 163, 74, 0.4);
+        }
+
+        .iframe-wrapper {
+            width: 100%;
+            height: 650px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #ffffff; /* Evita que o fundo escuro passe pelo excel */
+            border: 1px solid var(--glass-border);
+            position: relative;
+        }
+        
+        .iframe-wrapper iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @media (max-width: 768px) {
+            .nav-title { display: none; }
+            .navbar-content { padding: 0 20px; }
+            .container { margin-top: 30px; }
+            .page-header h1 { font-size: 1.8rem; }
+            .planilha-panel { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    
+    <nav class="premium-navbar">
+        <div class="navbar-content">
+            <div class="nav-left">
+                <img src="imagens/Logo Conviva branco-02.png" alt="Rede Conviva" class="nav-logo" onerror="this.style.display='none'">
+                <span class="nav-title">Novos Negócios</span>
+            </div>
+            <a href="selecao-modulo.html" class="btn-voltar">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+                Voltar
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>Empresas Conveniadas</h1>
+            <p>Abaixo está a planilha de empresas conveniadas.<br>
+            Estamos trabalhando e em breve teremos o mapa integrado via Looker Studio.</p>
+        </div>
+        
+        <div class="planilha-panel">
+            <div class="panel-header">
+                <div class="panel-title">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    Empresas Conveniadas
+                </div>
+                <a href="https://farmaciasconviva-my.sharepoint.com/:x:/g/personal/felix_buenos_farmaciasconviva_com_br/IQC2qa7ExnuBQbfWpnz8vuoJAeu3YEzY2gpH-JIcPfVe_mE?download=1" class="btn-download">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Baixar Planilha
+                </a>
+            </div>
+            
+            <div class="iframe-wrapper">
+                <iframe src="https://farmaciasconviva-my.sharepoint.com/:x:/g/personal/felix_buenos_farmaciasconviva_com_br/IQC2qa7ExnuBQbfWpnz8vuoJAeu3YEzY2gpH-JIcPfVe_mE?action=embedview&wdAllowInteractivity=True&wdHideGridlines=False"></iframe>
+            </div>
+        </div>
+    </div>
+    
+    <script type="module" src="javascript/servicos/auth.js"></script>
+    <script type="module">
+        import { Auth } from './javascript/servicos/auth.js';
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const funcao = await Auth.verificarPermissao(['mestre', 'mestre_comercial', 'mestre_marketing', 'comercial', 'marketing', 'user', 'visualizador'], 'selecao-modulo.html');
+            if (funcao === 'marketing' || funcao === 'mestre_marketing') {
+                window.location.href = 'selecao-modulo.html';
+            }
+        });
+    </script>
+</body>
+</html>

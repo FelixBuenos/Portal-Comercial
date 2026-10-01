@@ -32,13 +32,24 @@ body {
     flex-direction: column;
     -webkit-font-smoothing: antialiased;
     overflow-x: hidden;
+    animation: fadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 /* --- Navbar Superior --- */
 .hub-navbar {
     width: 100%;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: rgba(0, 18, 41, 0.4);
     backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     position: fixed;
     top: 0;
@@ -47,19 +58,20 @@ body {
 }
 
 .nav-container {
+    width: 100%;
     max-width: 1200px;
     margin: 0 auto;
-    padding: 15px 30px;
+    padding: 0 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-.nav-logo { max-height: 35px; width: auto; }
+.nav-logo { max-height: 55px; width: auto; }
 
 /* --- Container da Seleção --- */
 .hub-main-container {
-    max-width: 900px; /* Reduzido para alinhar perfeitamente com apenas 2 cards */
+    max-width: 1200px; /* Expandido para acomodar 3 cards */
     width: 100%;
     margin: 160px auto auto auto;
     padding: 0 40px 60px 40px;
@@ -71,10 +83,10 @@ body {
 .hub-main-title { font-size: 2.2rem; font-weight: 700; margin-bottom: 12px; }
 .hub-subtitle { color: var(--hub-text-muted); font-size: 1rem; }
 
-/* --- Grid de Módulos (2 Colunas Centralizadas) --- */
+/* --- Grid de Módulos (3 Colunas) --- */
 .hub-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); 
+    grid-template-columns: repeat(3, 1fr); 
     gap: 30px;
     max-width: 100%;
     margin: 0 auto;
@@ -82,7 +94,10 @@ body {
 
 /* --- Cards Estilizados Individuais --- */
 .card-modulo {
-    background: var(--hub-surface);
+    background: rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: var(--hub-radius);
     padding: 45px 35px;
     text-align: left;
@@ -106,11 +121,14 @@ body {
 .marketing::before {
     content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--color-verde-txt); 
 }
+.novos-negocios::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 5px; background: var(--color-vermelho-txt); 
+}
 
 /* Ícones e Conteúdos internos */
 .card-icon-container { font-size: 2rem; margin-bottom: 25px; }
-.card-title { color: var(--hub-text); font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; }
-.card-description { color: #475569; font-size: 0.92rem; line-height: 1.6; margin-bottom: 35px; flex-grow: 1; }
+.card-title { color: #ffffff; font-size: 1.4rem; font-weight: 700; margin-bottom: 15px; }
+.card-description { color: #94a3b8; font-size: 0.92rem; line-height: 1.6; margin-bottom: 35px; flex-grow: 1; }
 
 /* --- Botões de Ação --- */
 .btn-action {
@@ -127,6 +145,9 @@ body {
 
 .btn-action-verde { background: var(--color-verde-btn); color: var(--color-verde-txt); }
 .marketing:hover .btn-action-verde { background: var(--color-verde-txt); color: #ffffff; }
+
+.btn-action-vermelho { background: var(--color-vermelho-btn); color: var(--color-vermelho-txt); }
+.novos-negocios:hover .btn-action-vermelho { background: var(--color-vermelho-txt); color: #ffffff; }
 
 /* --- Responsividade --- */
 @media (max-width: 768px) {
