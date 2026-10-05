@@ -187,6 +187,26 @@
             box-shadow: 0 6px 20px rgba(22, 163, 74, 0.4);
         }
 
+        .btn-discreet {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+
+        .btn-discreet:hover {
+            color: var(--text-main);
+            background: rgba(255, 255, 255, 0.1);
+            border-color: rgba(255, 255, 255, 0.15);
+        }
+
         .iframe-wrapper {
             width: 100%;
             height: 650px;
@@ -229,25 +249,25 @@
 
     <div class="container">
         <div class="page-header">
-            <h1>Empresas Conveniadas</h1>
-            <p>Abaixo está a planilha de empresas conveniadas.<br>
-            Estamos trabalhando e em breve teremos o mapa integrado via Looker Studio.</p>
+            <h1>Mapa de Novos Negócios</h1>
+            <p>Explore as empresas conveniadas e oportunidades de expansão através do nosso mapa interativo.<br>
+            </p>
         </div>
         
         <div class="planilha-panel">
             <div class="panel-header">
                 <div class="panel-title">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                    Empresas Conveniadas
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"></polygon><line x1="8" y1="2" x2="8" y2="18"></line><line x1="16" y1="6" x2="16" y2="22"></line></svg>
+                    Mapa Interativo - Looker Studio
                 </div>
-                <a href="https://farmaciasconviva-my.sharepoint.com/:x:/g/personal/felix_buenos_farmaciasconviva_com_br/IQC2qa7ExnuBQbfWpnz8vuoJAeu3YEzY2gpH-JIcPfVe_mE?download=1" class="btn-download">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                    Baixar Planilha
+                <a href="https://farmaciasconviva-my.sharepoint.com/:x:/g/personal/felix_buenos_farmaciasconviva_com_br/IQC2qa7ExnuBQbfWpnz8vuoJAeu3YEzY2gpH-JIcPfVe_mE?download=1" class="btn-discreet" title="Baixar Planilha Original">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                    Planilha Excel
                 </a>
             </div>
             
             <div class="iframe-wrapper">
-                <iframe src="https://farmaciasconviva-my.sharepoint.com/:x:/g/personal/felix_buenos_farmaciasconviva_com_br/IQC2qa7ExnuBQbfWpnz8vuoJAeu3YEzY2gpH-JIcPfVe_mE?action=embedview&wdAllowInteractivity=True&wdHideGridlines=False"></iframe>
+                <iframe src="https://datastudio.google.com/embed/reporting/037d6f05-b35a-4a9b-bafc-8baee2cf3f41/page/ZaY1F" frameborder="0" style="border:0" allowfullscreen sandbox="allow-storage-access-by-user-activation allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"></iframe>
             </div>
         </div>
     </div>
