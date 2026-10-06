@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gráficos do Marketing - Rede Conviva</title>
+    <!-- Fontes e Estilos Base -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/marketing/portal-marketing.css">
+    <link rel="stylesheet" href="css/marketing/graficos-marketing.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Loader temporário para API ClickUp */
+        #loader-clickup {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 50px;
+            color: #94a3b8;
+            font-size: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(255, 255, 255, 0.1);
+            border-left-color: #dc2626;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        .dashboard-content {
+            display: none; /* Escondido até carregar os dados */
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="hub-navbar">
+        <div class="nav-container">
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <img src="imagens/Logo Conviva branco-02.png" alt="Rede Conviva" class="nav-logo">
+                <button class="btn-voltar" onclick="window.history.back()">← Voltar</button>
+            </div>
+            <span class="nav-title">Acompanhamento de Demandas</span>
+            <div style="width: 120px;"></div>
+        </div>
+    </nav>
+
+    <main class="marketing-main-container">
+        <div class="marketing-intro">
+            <h1 class="marketing-main-title">Painel de Demandas</h1>
+            <p class="marketing-subtitle">Indicadores em tempo real baseados nas tarefas do time de Marketing.</p>
+        </div>
+
+        <div id="loader-clickup">
+            <div class="spinner"></div>
+            <span>Buscando dados no ClickUp...</span>
+        </div>
+
+        <div id="dashboard-content" style="display: none;">
+            <!-- Top Section: KPI + Filtros -->
+            <div style="display: flex; gap: 20px; margin-bottom: 30px; align-items: stretch; flex-wrap: wrap;">
+                
+                <!-- Cards de KPI (Total) -->
+                <div class="kpi-card" style="flex: 1; min-width: 200px; max-width: 300px; text-align: center; display: flex; flex-direction: column; justify-content: center; align-items: center; margin: 0; box-shadow: 0 15px 35px rgba(0,0,0,0.25);">
+                    <span class="kpi-label" style="margin-bottom: 10px;">TOTAL DE DEMANDAS</span>
+                    <h3 class="kpi-value" id="kpi-total" style="font-size: 2.5rem; margin-bottom: 5px;">0</h3>
+                    <span class="kpi-trend" style="font-size: 0.9rem;">Registradas no sistema</span>
+                </div>
+
+                <!-- Filtros Globais -->
+                <div class="filter-container" style="flex: 3; background: rgba(255, 255, 255, 0.04); padding: 20px; border-radius: 16px; display: flex; gap: 20px; border: 1px solid rgba(255, 255, 255, 0.08); flex-wrap: wrap; box-shadow: 0 15px 35px rgba(0,0,0,0.25); align-items: center;">
+                    <div style="flex: 1; min-width: 200px;">
+                        <label for="filtro-loja" style="display: block; color: #94a3b8; font-size: 0.9rem; margin-bottom: 8px;">Loja Solicitante:</label>
+                        <select id="filtro-loja" style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; font-family: 'Sora', sans-serif; outline: none;">
+                            <option value="">Todas as Lojas</option>
+                        </select>
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label for="filtro-data-inicio" style="display: block; color: #94a3b8; font-size: 0.9rem; margin-bottom: 8px;">Data Inicial:</label>
+                        <input type="date" id="filtro-data-inicio" style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; font-family: 'Sora', sans-serif; outline: none; color-scheme: dark;">
+                    </div>
+                    <div style="flex: 1; min-width: 200px;">
+                        <label for="filtro-data-fim" style="display: block; color: #94a3b8; font-size: 0.9rem; margin-bottom: 8px;">Data Final:</label>
+                        <input type="date" id="filtro-data-fim" style="width: 100%; padding: 10px; background: rgba(0, 0, 0, 0.2); border: 1px solid rgba(255, 255, 255, 0.1); color: white; border-radius: 8px; font-family: 'Sora', sans-serif; outline: none; color-scheme: dark;">
+                    </div>
+                </div>
+            </div>
+
+            <div class="charts-grid">
+
+            <!-- Gráfico Principal - Demandas por Loja -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h2>Maiores Demandantes</h2>
+                </div>
+                <div class="chart-body" style="height: 400px; overflow-y: auto; overflow-x: hidden; padding-right: 10px;">
+                    <div id="lojaChartContainer" style="position: relative;">
+                        <canvas id="lojaChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráfico Secundário - Demandas por Status -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h2>Demandas por Status</h2>
+                </div>
+                <div class="chart-body" style="height: 400px;">
+                    <canvas id="statusChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfico Secundário - Demandas por Categoria -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h2>Demandas por Categoria</h2>
+                </div>
+                <div class="chart-body" style="height: 400px;">
+                    <canvas id="categoriaChart"></canvas>
+                </div>
+            </div>
+
+            <!-- Gráfico Secundário - Demandas por Origem -->
+            <div class="chart-card">
+                <div class="chart-header">
+                    <h2>Demandas por Origem</h2>
+                </div>
+                <div class="chart-body" style="height: 400px;">
+                    <canvas id="origemChart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tabela de Dados Detalhados -->
+        <div class="table-container dashboard-content" id="table-container">
+            <div class="chart-header" style="margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <h2>Detalhamento das Demandas</h2>
+                <button id="clear-filters-btn" style="display: none; padding: 5px 15px; background: #dc2626; color: white; border: none; border-radius: 4px; cursor: pointer; font-family: 'Sora', sans-serif;">Limpar Filtros</button>
+            </div>
+            <div style="overflow-x: auto;">
+                <table id="data-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.9rem; color: #cbd5e1;">
+                    <thead style="border-bottom: 1px solid rgba(255, 255, 255, 0.1);">
+                        <tr>
+                            <th style="padding: 12px; font-weight: 600;">Descrição da Tarefa</th>
+                            <th style="padding: 12px; font-weight: 600;">Data Criação</th>
+                            <th style="padding: 12px; font-weight: 600;">Status</th>
+                            <th style="padding: 12px; font-weight: 600;">Loja</th>
+                            <th style="padding: 12px; font-weight: 600;">Categoria</th>
+                        </tr>
+                    </thead>
+                    <tbody id="data-table-body">
+                        <!-- Preenchido via JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script src="javascript/marketing/graficos-marketing.js"></script>
+</body>
+
+</html>
