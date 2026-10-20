@@ -221,53 +221,95 @@
         <div class="loading-overlay" id="loading">
             <div class="spinner"></div>
         </div>
-        <iframe id="content-frame" class="content-frame" src="hub-welcome.html"></iframe>
+        <iframe id="content-frame" class="content-frame" src="hub-welcome.html" onload="const l=document.getElementById('loading');if(l){l.style.opacity='0';setTimeout(()=>{if(l.style.opacity==='0')l.style.display='none';},400);}"></iframe>
     </main>
 
     <script type="module" src="javascript/servicos/auth.js"></script>
     <script type="module">
         import { Auth } from './javascript/servicos/auth.js';
 
+        const iframe = document.getElementById('content-frame');
+        const loading = document.getElementById('loading');
+
+        function hideLoading() {
+            if (loading) {
+                loading.style.opacity = '0';
+                setTimeout(() => {
+                    if (loading.style.opacity === '0') {
+                        loading.style.display = 'none';
+                    }
+                }, 400);
+            }
+        }
+
+        function showLoading() {
+            if (loading) {
+                loading.style.display = 'flex';
+                loading.offsetHeight;
+                loading.style.opacity = '1';
+            }
+        }
+
+        // Listener imediato no iframe para não perder eventos disparados antes de awaits assíncronos
+        if (iframe) {
+            iframe.addEventListener('load', hideLoading);
+            try {
+                if (iframe.contentDocument && (iframe.contentDocument.readyState === 'complete' || iframe.contentDocument.readyState === 'interactive')) {
+                    hideLoading();
+                }
+            } catch (e) {}
+        }
+
+        // Proteção para restauração via cache de navegação (bfcache)
+        window.addEventListener('pageshow', () => {
+            hideLoading();
+        });
+
+        // Failsafe máximo de segurança: oculta o loading se demorar mais que 2.5s
+        setTimeout(hideLoading, 2500);
+
         document.addEventListener('DOMContentLoaded', async () => {
             const funcao = await Auth.verificarPermissao(['mestre', 'mestre_comercial', 'comercial', 'user', 'visualizador'], 'index.html');
             if (funcao === 'mestre' || funcao === 'mestre_comercial') {
-                document.getElementById('btn-admin').style.display = 'flex';
-                document.getElementById('btn-admin').addEventListener('click', () => {
-                    document.getElementById('content-frame').src = 'admin-comercial.html?t=' + new Date().getTime();
-                    updateActiveBtn(document.getElementById('btn-admin'));
+                const btnAdmin = document.getElementById('btn-admin');
+                if (btnAdmin) {
+                    btnAdmin.style.display = 'flex';
+                    btnAdmin.addEventListener('click', () => {
+                        showLoading();
+                        iframe.src = 'admin-comercial.html?t=' + new Date().getTime();
+                        updateActiveBtn(btnAdmin);
+                    });
+                }
+            }
+
+            const btnSair = document.getElementById('btn-sair');
+            if (btnSair) {
+                btnSair.addEventListener('click', () => {
+                    Auth.logout();
                 });
             }
 
-            document.getElementById('btn-sair').addEventListener('click', () => {
-                Auth.logout();
-            });
-
             const navItems = document.querySelectorAll('#sidebar-nav .nav-item');
-            const iframe = document.getElementById('content-frame');
-            const loading = document.getElementById('loading');
 
             function updateActiveBtn(targetBtn) {
                 navItems.forEach(btn => btn.classList.remove('active'));
-                if(document.getElementById('btn-admin')) document.getElementById('btn-admin').classList.remove('active');
-                if(targetBtn) targetBtn.classList.add('active');
+                const btnAdmin = document.getElementById('btn-admin');
+                if (btnAdmin) btnAdmin.classList.remove('active');
+                if (targetBtn) targetBtn.classList.add('active');
             }
 
-            // Set first active
+            // Define o primeiro botão ativo
             updateActiveBtn(navItems[0]);
 
             navItems.forEach(btn => {
                 btn.addEventListener('click', () => {
                     const target = btn.getAttribute('data-target');
                     if (target) {
-                        loading.style.opacity = '1';
+                        showLoading();
                         iframe.src = target.includes('?') ? target : target + '?t=' + new Date().getTime();
                         updateActiveBtn(btn);
                     }
                 });
-            });
-
-            iframe.addEventListener('load', () => {
-                loading.style.opacity = '0';
             });
         });
     </script>
