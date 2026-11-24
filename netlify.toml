@@ -5,6 +5,7 @@
 [build.environment]
   NODE_VERSION = "22"
   VITE_PORTAL_ENV = "test"
+  VITE_ACCESS_LOOKUP_ONLY = "true"
   VITE_API_BASE_URL = "https://borough-lagging-paltry.ngrok-free.dev"
 
 [[headers]]

@@ -3,6 +3,7 @@ import {RefreshCw,ShieldCheck} from 'lucide-react';
 import type {Api} from '../../shared/api';
 import {portals,portalNames,type Permission,type UserRow} from '../../shared/types';
 import {NewUserPanel} from './NewUserPanel';
+const lookupOnly = import.meta.env.VITE_ACCESS_LOOKUP_ONLY === 'true';
 export function AccessPanel({api,onAccessChanged}:{api:Api;onAccessChanged:()=>void}){
  const [users,setUsers]=useState<UserRow[]>([]),[offset,setOffset]=useState(0),[selected,setSelected]=useState<UserRow|null>(null);
  const [error,setError]=useState(''),[notice,setNotice]=useState(''),[loading,setLoading]=useState(false);
@@ -50,7 +51,9 @@ export function AccessPanel({api,onAccessChanged}:{api:Api;onAccessChanged:()=>v
  }
  return <div className="access-admin">
   <div className="page-top"><div><div className="eyebrow">ADMINISTRAÇÃO MESTRE</div><h1>Usuários e acessos</h1><p>Defina quais portais cada conta cadastrada pode consultar ou administrar.</p></div><ShieldCheck className="heading-icon" size={35}/></div>
-  <NewUserPanel api={api} onCreated={()=>{void load();}}/>
+  {lookupOnly
+   ? <p>O cadastro de contas e a edição de permissões estão disponíveis no portal interno de teste.</p>
+   : <NewUserPanel api={api} onCreated={()=>{void load();}}/>}
   <section className="surface access-accounts">
    <form className="toolbar" onSubmit={event=>{event.preventDefault();setOffset(0);setSearch(searchInput.trim().toLowerCase());}}>
     <label>Nome, e-mail ou ID <input type="search" value={searchInput} onChange={event=>setSearchInput(event.target.value)}/></label>
@@ -60,7 +63,7 @@ export function AccessPanel({api,onAccessChanged}:{api:Api;onAccessChanged:()=>v
    <div className="toolbar"><div><h2>Contas e permissões</h2><p className="muted">Selecione uma conta para consultar e ajustar seus acessos.</p></div><button className="secondary" disabled={loading} onClick={()=>void load()}><RefreshCw size={16}/>Atualizar</button></div>
    {error&&<div role="alert" className="message error">{error}</div>}{notice&&<div role="status" className="message success">{notice}</div>}
    {loading?<p className="empty" role="status">Carregando contas…</p>:<div className="access-layout"><div className="user-list">{users.map(user=><button key={user.authId} className={'user-item '+(selected?.authId===user.authId?'selected':'')} onClick={()=>{setSelected(user);setNotice('');}}><strong>{user.nome || user.email || (user.mestre?'Administrador mestre':'Conta cadastrada')}</strong>{user.nome && user.email && <span>{user.email}</span>}<code>{user.authId}</code><span>{user.ativo?'Ativa':'Desativada'}</span></button>)}{users.length===0&&<p>Nenhuma conta nesta página.</p>}</div>
-    <div className="permission-list">{selected?<><h2>Acessos da conta</h2><code className="selected-id">{selected.authId}</code>{selected.mestre?<p className="message info">Esta conta possui administração mestre. Essa concessão não pode ser alterada nesta tela.</p>:portals.map(portal=><PermissionRow key={selected.authId+portal+JSON.stringify(selected.permissoes)} disabled={!selected.ativo} permission={selected.permissoes.find(p=>p.portal===portal)??{portal,consultar:false,administrar:false}} onSave={save}/>)}</>:<div className="empty"><ShieldCheck size={28}/><h2>Selecione uma conta</h2><p>Os acessos de cada portal aparecerão aqui.</p></div>}</div>
+    <div className="permission-list">{selected?<><h2>Acessos da conta</h2><code className="selected-id">{selected.authId}</code>{selected.mestre?<p className="message info">Esta conta possui administração mestre. Essa concessão não pode ser alterada nesta tela.</p>:portals.map(portal=><PermissionRow key={selected.authId+portal+JSON.stringify(selected.permissoes)} disabled={lookupOnly||!selected.ativo} permission={selected.permissoes.find(p=>p.portal===portal)??{portal,consultar:false,administrar:false}} onSave={save}/>)}</>:<div className="empty"><ShieldCheck size={28}/><h2>Selecione uma conta</h2><p>Os acessos de cada portal aparecerão aqui.</p></div>}</div>
    </div>}
    {selected?.ativo&&!selected.mestre&&!loading&&<div className="toolbar">
     <button type="button" className="secondary" disabled={deactivating} onClick={()=>void deactivateSelected()}>
