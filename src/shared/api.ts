@@ -45,6 +45,7 @@ export function createApi(getToken:()=>Promise<string|null>,base='/api',fetcher:
   salvarPlanilha:(tipo:PlanilhaTipo,mes:string,url:string)=>request<PlanilhaMensal>('/v1/comercial/planilhas/'+tipo+'/'+encodeURIComponent(mes),'PUT',{url}),
   removerPlanilha:(tipo:PlanilhaTipo,mes:string)=>request<void>('/v1/comercial/planilhas/'+tipo+'/'+encodeURIComponent(mes),'DELETE'),
   users:(offset=0)=>request<{dados:UserRow[];limit:number;offset:number}>('/v1/access/users?limit=50&offset='+offset),
+  deactivateUser:(id:string)=>request<void>('/v1/access/users/'+encodeURIComponent(id)+'/deactivate','POST'),
   permission:(id:string,data:Permission)=>request<Permission>('/v1/access/'+encodeURIComponent(id)+'/'+data.portal,'PUT',{consultar:data.consultar,administrar:data.administrar})
  };
 }
