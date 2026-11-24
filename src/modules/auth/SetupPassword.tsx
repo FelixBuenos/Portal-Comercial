@@ -26,7 +26,7 @@ export function SetupPassword(){
  },[client]);
  async function submit(e:FormEvent){
   e.preventDefault();if(saving.current||!client||!ready)return;
-  if(password.length<12||password!==confirmation){setError('Use pelo menos 12 caracteres e repita a mesma senha.');return;}
+  if(password.length<6||password!==confirmation){setError('Use pelo menos 6 caracteres e repita a mesma senha.');return;}
   saving.current=true;setBusy(true);setError('');
   try{
    const {error}=await client.auth.updateUser({password});
@@ -42,7 +42,7 @@ export function SetupPassword(){
    <p>Crie sua senha pessoal. Não a compartilhe com o administrador.</p>
    {error&&<div className="message error" role="alert">{error}</div>}
    {!ready&&!error&&<p role="status">Verificando o link…</p>}
-   {ready&&<form className="form-grid" onSubmit={submit}><label>Nova senha<input type="password" autoComplete="new-password" minLength={12} maxLength={128} required value={password} disabled={busy} onChange={e=>setPassword(e.target.value)}/></label><label>Repita a nova senha<input type="password" autoComplete="new-password" minLength={12} maxLength={128} required value={confirmation} disabled={busy} onChange={e=>setConfirmation(e.target.value)}/></label><button className="primary" disabled={busy}>{busy?'Salvando…':'Definir senha'}</button></form>}
+   {ready&&<form className="form-grid" onSubmit={submit}><label>Nova senha<input type="password" autoComplete="new-password" minLength={6} maxLength={128} required value={password} disabled={busy} onChange={e=>setPassword(e.target.value)}/></label><label>Repita a nova senha<input type="password" autoComplete="new-password" minLength={6} maxLength={128} required value={confirmation} disabled={busy} onChange={e=>setConfirmation(e.target.value)}/></label><button className="primary" disabled={busy}>{busy?'Salvando…':'Definir senha'}</button></form>}
   </>}
  </section></div>;
 }
