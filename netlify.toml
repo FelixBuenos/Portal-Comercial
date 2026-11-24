@@ -6,7 +6,7 @@
   NODE_VERSION = "22"
   VITE_PORTAL_ENV = "test"
   VITE_ACCESS_LOOKUP_ONLY = "true"
-  VITE_API_BASE_URL = "https://borough-lagging-paltry.ngrok-free.dev"
+  VITE_API_BASE_URL = "/api"
 
 [[headers]]
   for = "/*"
@@ -15,4 +15,11 @@
     X-Frame-Options = "DENY"
     Referrer-Policy = "no-referrer"
     Cache-Control = "no-store"
-    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://ugkmuyxiigtskrevptrg.supabase.co https://borough-lagging-paltry.ngrok-free.dev; frame-src https://datastudio.google.com https://docs.google.com https://farmaciasconviva.sharepoint.com https://farmaciasconviva-my.sharepoint.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+    Content-Security-Policy = "default-src 'self'; script-src 'self'; style-src 'self' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self' https://ugkmuyxiigtskrevptrg.supabase.co; frame-src https://datastudio.google.com https://docs.google.com https://farmaciasconviva.sharepoint.com https://farmaciasconviva-my.sharepoint.com; frame-ancestors 'none'; base-uri 'self'; form-action 'self'"
+
+[[redirects]]
+  from = "/api/*"
+  to = "https://borough-lagging-paltry.ngrok-free.dev/:splat"
+  status = 200
+  force = true
+  headers = {"ngrok-skip-browser-warning" = "1"}
