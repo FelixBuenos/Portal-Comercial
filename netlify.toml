@@ -22,4 +22,4 @@
   to = "https://borough-lagging-paltry.ngrok-free.dev/:splat"
   status = 200
   force = true
-  headers = {"ngrok-skip-browser-warning" = "1", Origin = "https://glistening-genie-c8231d.netlify.app"}
+  headers = {"ngrok-skip-browser-warning" = "1", Origin = "https://glistening-genie-c8231d.netlify.app", "X-Conviva-Preview" = "netlify"}
